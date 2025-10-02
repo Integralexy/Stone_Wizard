@@ -1,3 +1,37 @@
+/* Basic Horizontal Navigation */
+nav {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none; /* Remove bullets */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Arrange horizontally */
+    justify-content: center; /* Center items */
+}
+
+nav li {
+    margin: 0 15px; /* Spacing between items */
+}
+
+nav a {
+    color: white;
+    text-decoration: none; /* Remove underline */
+    padding: 8px 15px;
+    display: block; /* Make entire area clickable */
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+nav a.active {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
