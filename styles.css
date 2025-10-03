@@ -2,8 +2,8 @@
            align-items: center;
            }
 
-.imageflex-p { margin-right: 50px;}
-.imageflex-image {margin-left: 50px;}
+.imageflex-p { margin-right: 500px;}
+.imageflex-image {margin-left: 500px;}
 
 .nav {
     display: flex;
