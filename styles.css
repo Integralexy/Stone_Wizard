@@ -15,14 +15,29 @@
   object-fit: cover;
 }
 
-.nav{
+.nav {
     display: flex;
-    gap: 50px;
+    justify-content: space-evenly; /* Equal space around all items */
+    align-items: center;
     color: var(--text-color);
     font-size: 25px;
-    font-family: 'Manrope';
+    font-family: 'Manrope', sans-serif;
     font-style: normal;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.nav a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* space between img and text */
+}
+
+.nav a:not(:last-child) {
+    border-right: 1px solid var(--text-color);
+    padding-right: 20px;
+    margin-right: 20px;
 }
