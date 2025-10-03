@@ -2,9 +2,9 @@
            align-items: center;
            }
 
-.imageflex-p { margin-right: 500px;}
-.imageflex-image {margin-left: 500px;}
-
+.imageflex-container { 
+  display: flex;
+  gap: 50px; }
 .nav {
     display: flex;
     gap: 25px;
