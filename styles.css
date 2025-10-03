@@ -46,6 +46,15 @@
     margin-right: 20px;
 }
 
+.talk-titles {
+  background-color: #f0f0f0;
+}
+
+.talk-titles a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;}
+
 .link-row {
   display: flex;
   justify-content: space-between;
