@@ -2,9 +2,7 @@
            align-items: center;
            }
 
-.imageflex-container { 
-  display: flex;
-  gap: 500px; }
+
 
 .nav {
     display: flex;
