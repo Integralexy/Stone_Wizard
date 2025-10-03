@@ -1,7 +1,7 @@
 .imageflex { display: flex;
            align-items: center;
            }
-
+.imageflex-container{ gap: 100px;}
 
 
 .nav {
@@ -11,4 +11,5 @@
     font-size: 17px;
     font-family: 'Manrope';
     font-style: normal;
+    align-items: center;
 }
