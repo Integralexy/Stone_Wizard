@@ -50,7 +50,7 @@
   display: flex;
   justify-content: space-between;
   background-color: #f0f0f0;
-  padding: 10px 40px;
+  padding: 5px 40px;
 }
 
 /* Make each section inside the row a column */
