@@ -1,8 +1,8 @@
 .imageflex {
   display: flex;
   align-items: flex-start;
-  gap: 50px;
-  max-width: 1000px;
+  gap: 40px;
+  max-width: 900px;
   margin: 10px auto;
 }
 
