@@ -2,9 +2,8 @@
            align-items: center;
            }
 
-.imageflexcontent {margin-left: 50px; margin-top: 0; }
-
-.imageflex p { margin-right: 50px; margin-top: 0; }
+.imageflex-p { margin-right: 50px;}
+.imageflex-image {margin-left: 50px;}
 
 .nav {
     display: flex;
