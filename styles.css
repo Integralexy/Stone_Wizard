@@ -47,18 +47,13 @@
 }
 
 .link-row {
-      display: flex;
-      justify-content: space-between;
-      background-color: #f0f0f0;
-      padding: 10px 20px;
-    }
+  display: flex;
+  justify-content: space-between;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+}
 
-.link-row a {
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-    }
-
+/* Make each section inside the row a column */
 .link-row > div {
   display: flex;
   flex-direction: column;
@@ -69,7 +64,13 @@
 .link-column {
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Optional: space between links */
+  gap: 5px; /* Adds space between links */
+}
+
+.link-row a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
 }
 
 .link-row-header {
