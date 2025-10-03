@@ -1,9 +1,19 @@
-.imageflex { display: flex;
-           align-items: center;
-           }
-.flex-container{ display: flex;
-                     gap: 500px;}
+.imageflex {
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  max-width: 800px;
+  margin: 40px auto;
+}
 
+.text-block {
+  flex: 1;
+}
+
+.imageflex img {
+  border-radius: 8px;
+  object-fit: cover;
+}
 
 .nav {
     display: flex;
