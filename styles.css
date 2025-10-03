@@ -24,3 +24,9 @@
     font-style: normal;
     align-items: center;
 }
+
+.nav-container{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
