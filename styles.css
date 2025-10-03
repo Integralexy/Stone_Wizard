@@ -17,9 +17,9 @@
 
 .nav {
     display: flex;
-    gap: 200px;
+    gap: 40px;
     color: var(--text-color);
-    font-size: 35px;
+    font-size: 25px;
     font-family: 'Manrope';
     font-style: normal;
     align-items: center;
