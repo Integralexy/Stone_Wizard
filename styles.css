@@ -1,1 +1,2 @@
-
+.imageflex { display: flex; }
+.imageflexcontent { margin-left: 5px; margin-top: 0; }
