@@ -55,8 +55,10 @@
   flex-direction: column;
   gap: 10px;
   padding: 5px 5px 5px 5px;/* Adds space between links */
-  background-color: #B0B5B0;
+  
 }
+
+/* background-color: #B0B5B0; */
 
 .talk-titles a {
   text-decoration: none;
@@ -72,9 +74,10 @@
 .link-row {
   display: flex;
   justify-content: space-between;
-  background-color: #f0f0f0;
   padding: 0px 50px 5px 50px;
 }
+
+/*   background-color: #f0f0f0; */
 
 /* Make each section inside the row a column */
 .link-row > div {
