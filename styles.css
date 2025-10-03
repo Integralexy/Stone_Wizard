@@ -1,2 +1,12 @@
 .imageflex { display: flex; }
+
 .imageflexcontent { margin-left: 5px; margin-top: 0; }
+
+.nav {
+    display: flex;
+    gap: 25px;
+    color: var(--text-color);
+    font-size: 17px;
+    font-family: 'Manrope';
+    font-style: normal;
+}
