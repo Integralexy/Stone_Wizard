@@ -1,14 +1,15 @@
 .imageflex { display: flex;
            align-items: center;
            }
-.imageflex-container{ gap: 100px;}
+.flex-container{ display: flex;
+                     gap: 100px;}
 
 
 .nav {
     display: flex;
-    gap: 25px;
+    gap: 50px;
     color: var(--text-color);
-    font-size: 17px;
+    font-size: 35px;
     font-family: 'Manrope';
     font-style: normal;
     align-items: center;
