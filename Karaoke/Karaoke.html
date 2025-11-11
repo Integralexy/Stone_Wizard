@@ -60,28 +60,45 @@
   <div class="container">
     <h1> Which Karaoke Bar Got You Fallin' in Love Tonight?</h1>
 
-    <!-- Question 1 -->
+
+
+<!-- Always-shown Question 0 -->
     <div class="question">
       <label>Which area of Seattle are you located?</label>
       <select id="q1">
         <option value="">--Select--</option>
-        <option value="yes">Udistrict</option>
-        <option value="no">Ballard</option>
-        <option value="yes">Fremont</option>
-        <option value="no">Cap Hill</option>
-        <option value="no">Downtown</option>
+        <option value="U">Udistrict</option>
+        <option value="B">Ballard</option>
+        <option value="F">Fremont</option>
+        <option value="C">Cap Hill</option>
+        <option value="D">Downtown</option>
+        <option value="N">Northgate</option>
+      </select>
+    </div>
+
+    
+    <!-- Question 1 -->
+    <div class="question">
+      <label>How committed are you to karaoke tonight?</label>
+      <select id="q1">
+        <option value="">--Select--</option>
+        <option value="yes">Very (Willing to travel to another area)</option>
+        <option value="yen">Ehh (Willing to travel somewhere close)</option>
+        <option value="no">I am a square (Won't travel)</option>
       </select>
     </div>
 
     <!-- Conditional Question 2 -->
-    <div id="outdoorQuestions" class="hidden">
+    <div id="TransportQuestions" class="hidden">
       <div class="question">
-        <label>How committed are you to karaoke tonight?</label>
+        <label>What is your preferred mode of transportation?</label>
         <select id="q2">
           <option value="">--Select--</option>
-          <option value="often">Very (Willing to travel to another area)</option>
-          <option value="sometimes">Ehh (Willing to travel somewhere close)</option>
-          <option value="rarely">I am a square (Won't travel)</option>
+          <option value="Walk"> Walking </option>
+          <option value="Bike"> Biking </option>
+          <option value="Car"> Driving </option>
+          <option value="Tran"> Public Transit </option>
+          <option value="Chauff"> Uber/Lyft </option>
         </select>
       </div>
     </div>
@@ -99,16 +116,16 @@
 
   <script>
     const q1 = document.getElementById('q1');
-    const outdoorQuestions = document.getElementById('outdoorQuestions');
+    const TransportQuestions = document.getElementById('TransportQuestions');
     const submitBtn = document.getElementById('submitBtn');
     const resultDiv = document.getElementById('result');
 
     // Conditional display
     q1.addEventListener('change', () => {
       if (q1.value === 'yes') {
-        outdoorQuestions.classList.remove('hidden');
+        TransportQuestions.classList.remove('hidden');
       } else {
-        outdoorQuestions.classList.add('hidden');
+        TransportQuestions.classList.add('hidden');
       }
     });
 
@@ -122,7 +139,7 @@
 
       // Q2 scoring (only if visible)
       const q2 = document.getElementById('q2');
-      if (!outdoorQuestions.classList.contains('hidden')) {
+      if (!TransportQuestions.classList.contains('hidden')) {
         if (q2.value === 'often') score += 3;
         else if (q2.value === 'sometimes') score += 2;
         else if (q2.value === 'rarely') score += 1;
