@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seattle Karaoke Bars</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      max-width: 600px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    select, input[type="radio"] {
+      margin-top: 5px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      display: none;
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      color: green;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1> Which Karaoke Bar Got You Fallin' in Love Tonight?</h1>
+
+    <!-- Question 1 -->
+    <div class="question">
+      <label>Which area of Seattle are you located?</label>
+      <select id="q1">
+        <option value="">--Select--</option>
+        <option value="yes">Udistrict</option>
+        <option value="no">Ballard</option>
+        <option value="yes">Fremont</option>
+        <option value="no">Cap Hill</option>
+        <option value="no">Downtown</option>
+      </select>
+    </div>
+
+    <!-- Conditional Question 2 -->
+    <div id="outdoorQuestions" class="hidden">
+      <div class="question">
+        <label>How committed are you to karaoke tonight?</label>
+        <select id="q2">
+          <option value="">--Select--</option>
+          <option value="often">Very (Willing to travel to another area)</option>
+          <option value="sometimes">Ehh (Willing to travel somewhere close)</option>
+          <option value="rarely">I am a square (Won't travel)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Always-shown Question 3 -->
+    <div class="question">
+      <label>How many hours a week do you exercise?</label>
+      <input type="number" id="q3" min="0" placeholder="Enter a number">
+    </div>
+
+    <button id="submitBtn">Submit</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const q1 = document.getElementById('q1');
+    const outdoorQuestions = document.getElementById('outdoorQuestions');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultDiv = document.getElementById('result');
+
+    // Conditional display
+    q1.addEventListener('change', () => {
+      if (q1.value === 'yes') {
+        outdoorQuestions.classList.remove('hidden');
+      } else {
+        outdoorQuestions.classList.add('hidden');
+      }
+    });
+
+    // Scoring logic
+    submitBtn.addEventListener('click', () => {
+      let score = 0;
+
+      // Q1 scoring
+      if (q1.value === 'yes') score += 2;
+      else if (q1.value === 'no') score += 0;
+
+      // Q2 scoring (only if visible)
+      const q2 = document.getElementById('q2');
+      if (!outdoorQuestions.classList.contains('hidden')) {
+        if (q2.value === 'often') score += 3;
+        else if (q2.value === 'sometimes') score += 2;
+        else if (q2.value === 'rarely') score += 1;
+      }
+
+      // Q3 scoring
+      const q3 = parseInt(document.getElementById('q3').value);
+      if (!isNaN(q3)) {
+        if (q3 >= 5) score += 3;
+        else if (q3 >= 2) score += 2;
+        else score += 1;
+      }
+
+      // Show result
+      resultDiv.style.display = 'block';
+      resultDiv.textContent = `Your total activity score is: ${score} points!`;
+
+      // Scroll to result
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
