@@ -89,7 +89,7 @@
     <p>Before you get five drinks in, what's your first order?</p>
     <label><input type="radio" name="q4" value="beer"> A beer</label><br>
     <label><input type="radio" name="q4" value="cider"> A cider</label><br>
-    <label><input type="radio" name="q4" value="wine"> Wine</label><br>
+    <label><input type="radio" name="q4" value="Cock"> Cocktail </label><br>
     <label><input type="radio" name="q4" value="shot"> A shot</label><br>
     <button type="button" onclick="submitAnswer(4)">Submit Answer</button>
     <div class="response" id="response4"></div>
@@ -108,10 +108,10 @@
   </div>
 
   <div class="question" data-question="4b">
-    <p>What kind of wine?</p>
-    <label><input type="radio" name="q4b" value="red"> Red</label><br>
-    <label><input type="radio" name="q4b" value="rose"> Rosé</label><br>
-    <label><input type="radio" name="q4b" value="white"> White</label><br>
+    <p>What kind of Cock?</p>
+    <label><input type="radio" name="q4b" value="marg"> Margarita </label><br>
+    <label><input type="radio" name="q4b" value="cos"> Cosmo </label><br>
+    <label><input type="radio" name="q4b" value="mar"> Martini </label><br>
     <button type="button" onclick="submitAnswer('4b')">Submit Answer</button>
     <div class="response" id="response4b"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next4b">Continue</button>
@@ -119,9 +119,9 @@
 
   <div class="question" data-question="4c">
     <p>What kind of shot?</p>
-    <label><input type="radio" name="q4c" value="vod"> Vodka</label><br>
-    <label><input type="radio" name="q4c" value="teq"> Tequila</label><br>
-    <label><input type="radio" name="q4c" value="whis"> Whiskey</label><br>
+    <label><input type="radio" name="q4c" value="vod"> Vodka </label><br>
+    <label><input type="radio" name="q4c" value="teq"> Tequila </label><br>
+    <label><input type="radio" name="q4c" value="whis"> Whiskey </label><br>
     <button type="button" onclick="submitAnswer('4c')">Submit Answer</button>
     <div class="response" id="response4c"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next4c">Continue</button>
@@ -162,9 +162,9 @@ const responses = {
   1: {U:"You must study hard! 👩‍🏫", F:"Its giving artsy! 👩‍🎨", C:"You definitely know how to party! 🥳", H:"I had a feeling, but didn't want to assume 😏"},
   2: {Monk:"Then you can beat me in a game of pool afterwards 🎱", Finn:"Hopefully you like Guinness ☘️", Rock:"I too like to feel fancy 🍸", Hula:"I'll need an umbrella in my drink 🍹", Fruit:"Good thing we're in Seattle 🏙️"},
   3: {star:"I commend your bravery 🫡", shy:"Same, I'm just a lil guy 🥺👉👈", none:"No problem! I'll embarrass myself either way 🗣️"},
-  4: {beer:"", cider:"Is this how you got so sweet? 😜", wine:"", shot:""},
+  4: {beer:"", cider:"Is this how you got so sweet? 😜", Cock:"", shot:""},
   "4a": {IPA:"Are we talking beer or the International Phonetic Alphabet? 🔤", dark:"First round is definitely on me 🍻", cheap:"Ah, a connoisseur of the financially efficient lager 🍺"},
-  "4b": {red:"Pairs well with good company 🍷", rose:"Maybe one as sweet as you? 🌹", white:"Perfect — something light to match that smile 😌"},
+  "4b": {marg:"So you like hispanic flavors 🇲🇽😏", cos:"With color’s as vibrant as your smile? 😁", mar:"Shaken or stirred? 🕵️‍♂️"},
   "4c": {vod:"I too like to live dangerously ⚠️", teq:"Just so you know, tequila makes me want to dance 🕺", whis:"Whiskey on the rocks? I might start melting 🥃"},
   5: {N:" ", Y:"Staaawwppp 🫣😏", K:"Fair enough 🤷‍♂️"}
 };
@@ -209,7 +209,7 @@ function nextQuestion() {
   if (currentQuestion === 4) {
     // Q4 flow → sub-questions or skip to 5 for cider
     if (answers.q4 === "beer") currentQuestion = "4a";
-    else if (answers.q4 === "wine") currentQuestion = "4b";
+    else if (answers.q4 === "Cock") currentQuestion = "4b";
     else if (answers.q4 === "shot") currentQuestion = "4c";
     else if (answers.q4 === "cider") currentQuestion = 5;
   } 
@@ -255,7 +255,7 @@ const scoreRules = {
   q4: { // first drink
     beer: ["M", "F"],
     cider: ["M", "F"],
-    wine: ["R", "C"],
+    Cock: ["R", "C"],
     shot: ["M", "R", "F", "H", "C"]
   }
 };
