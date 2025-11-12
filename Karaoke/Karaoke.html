@@ -148,13 +148,12 @@
 <script>
 
 function startQuiz() {
-  // Hide start screen
   document.getElementById("startScreen").style.display = "none";
-
-  // Show first question
-  const firstQuestion = document.querySelector('.question[data-question="1"]');
-  if (firstQuestion) firstQuestion.classList.add("active");
+  currentQuestion = 1; // make sure the quiz starts at question 1
+  const firstQ = document.querySelector(`[data-question="${currentQuestion}"]`);
+  if (firstQ) firstQ.classList.add("active");
 }
+  
 let currentQuestion = 1;
 const answers = {};
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec";
