@@ -38,7 +38,7 @@
 <body>
 
 <h1 style="text-align: center;"> You, Me, Karaoke</h1>
-<h2 style="text-align: center;">let’s see who can make the crowd cry for all the wrong reasons </h2>
+<h2 style="text-align: center;">Who can make the crowd cry for all the wrong reasons? </h2>
 
 <form id="quizForm">
 
@@ -150,7 +150,7 @@ const responses = {
   4: { "beer": " ", "cider": "Is this how you got so sweet? 😜", "wine": " ", "shot": " " },
   "4a": { "IPA": "Are we talking beer or the International Phonetic Alphabet? 🔤", "dark": "First round is definitely on me 🍻", "cheap": "Ah, a connoisseur of the financially efficient lager 🍺" },
   "4b": { "red": "Pairs well with good company 🍷", "rose": "Maybe one as sweet as you? 🌹", "white": "Perfect — something light to match that smile 😌" },
-  "4c": { "vod": "I too like to live dangerously ⚠️", "teq": "Tequila makes me want to dance 🕺", "whis": "Whiskey on the rocks? I might start melting 🥃" },
+  "4c": { "vod": "I too like to live dangerously ⚠️", "teq": "Just so you know, tequila makes me want to dance 🕺", "whis": "Whiskey on the rocks? I might start melting 🥃" },
   5: { "N": " ", "Y": "Staaawwppp 🫣😏", "K": "Fair enough 🤷‍♂️" }
 };
 
@@ -193,21 +193,53 @@ function nextQuestion() {
   const current = document.querySelector(`.question.active`);
   if (current) current.classList.remove("active");
 
+  // If coming from Question 3 → show Question 4
   if (currentQuestion === 3) {
-    // Reveal Question 4 after Q3
     document.querySelector(`.question[data-question="4"]`).classList.add("active");
     currentQuestion = 4;
-  } else if (currentQuestion >= 4) {
-    // Handle sub-questions (4a,4b,4c)
-    const nextSub = document.querySelector(".question.sub[style*='block']");
-    if (nextSub) { nextSub.classList.add("active"); nextSub.scrollIntoView({behavior:"smooth"}); return; }
-    else { finishQuiz(); }
-  } else {
-    currentQuestion++;
-    const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
-    if (next) next.classList.add("active");
-    else finishQuiz();
+    return;
   }
+
+  // If on Question 4 and a sub-question (4a, 4b, 4c) is visible, show it
+  if (currentQuestion === 4) {
+    if (document.getElementById("q4a").style.display === "block") {
+      document.getElementById("q4a").classList.add("active");
+      return;
+    }
+    if (document.getElementById("q4b").style.display === "block") {
+      document.getElementById("q4b").classList.add("active");
+      return;
+    }
+    if (document.getElementById("q4c").style.display === "block") {
+      document.getElementById("q4c").classList.add("active");
+      return;
+    }
+
+    // If no sub-question or finished one, go to Question 5
+    document.querySelector(`.question[data-question="5"]`).classList.add("active");
+    currentQuestion = 5;
+    return;
+  }
+
+  // If leaving a sub-question (4a, 4b, 4c), go to Question 5
+  if (["q4a", "q4b", "q4c"].some(id => current && current.id === id)) {
+    current.classList.remove("active");
+    document.querySelector(`.question[data-question="5"]`).classList.add("active");
+    currentQuestion = 5;
+    return;
+  }
+
+  // If on Question 5, finish the quiz
+  if (currentQuestion === 5) {
+    finishQuiz();
+    return;
+  }
+
+  // Default flow (just in case)
+  currentQuestion++;
+  const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
+  if (next) next.classList.add("active");
+  else finishQuiz();
 }
 
 function checkEligibility(qNum) {
