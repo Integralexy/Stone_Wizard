@@ -154,11 +154,14 @@ const responses = {
   5: { "N": " ", "Y": "Staaawwppp 🫣😏", "K": "Fair enough 🤷‍♂️" }
 };
 
+// ✅ Handles all questions & sub-questions
 function submitAnswer(qNum) {
-  const questionDiv = (typeof qNum === "string") ? document.getElementById("q" + qNum) : document.querySelector(`.question[data-question="${qNum}"]`);
+  const questionDiv = (typeof qNum === "string") 
+    ? document.getElementById("q" + qNum) 
+    : document.querySelector(`.question[data-question="${qNum}"]`);
+    
   const inputs = questionDiv.querySelectorAll('input');
   let value = null;
-
   inputs.forEach(input => { if (input.type === 'radio' && input.checked) value = input.value; });
 
   if (!value) { alert("Please select an answer first!"); return; }
@@ -169,18 +172,18 @@ function submitAnswer(qNum) {
   responseDiv.textContent = responseText;
   responseDiv.style.display = "block";
 
-  // Conditional sub-questions for Question 4
+  // ✅ Always show Continue button for any question/sub-question
+  const nextBtn = document.getElementById("next" + qNum);
+  if (nextBtn) nextBtn.style.display = "inline-block";
+
+  // ✅ Conditional sub-questions for Question 4
   if (qNum === 4) {
     document.getElementById("q4a").style.display = (value === "beer") ? "block" : "none";
     document.getElementById("q4b").style.display = (value === "wine") ? "block" : "none";
     document.getElementById("q4c").style.display = (value === "shot") ? "block" : "none";
   }
 
-  // Show continue button for this question
-  const nextBtn = document.getElementById("next" + qNum);
-  if (nextBtn) nextBtn.style.display = "inline-block";
-
-  // Record in Google Sheet
+  // ✅ Record in Google Sheet
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
@@ -189,39 +192,43 @@ function submitAnswer(qNum) {
   });
 }
 
+// ✅ Moves between questions and sub-questions
 function nextQuestion() {
   const current = document.querySelector(`.question.active`);
   if (current) current.classList.remove("active");
 
-  // If coming from Question 3 → show Question 4
+  // From Q3 → show Q4
   if (currentQuestion === 3) {
     document.querySelector(`.question[data-question="4"]`).classList.add("active");
     currentQuestion = 4;
     return;
   }
 
-  // If on Question 4 and a sub-question (4a, 4b, 4c) is visible, show it
+  // From Q4 → sub-question if one is visible
   if (currentQuestion === 4) {
     if (document.getElementById("q4a").style.display === "block") {
       document.getElementById("q4a").classList.add("active");
+      document.getElementById("q4a").scrollIntoView({behavior: "smooth"});
       return;
     }
     if (document.getElementById("q4b").style.display === "block") {
       document.getElementById("q4b").classList.add("active");
+      document.getElementById("q4b").scrollIntoView({behavior: "smooth"});
       return;
     }
     if (document.getElementById("q4c").style.display === "block") {
       document.getElementById("q4c").classList.add("active");
+      document.getElementById("q4c").scrollIntoView({behavior: "smooth"});
       return;
     }
 
-    // If no sub-question or finished one, go to Question 5
+    // No sub-question → go to Q5
     document.querySelector(`.question[data-question="5"]`).classList.add("active");
     currentQuestion = 5;
     return;
   }
 
-  // If leaving a sub-question (4a, 4b, 4c), go to Question 5
+  // Leaving a sub-question (4a, 4b, 4c) → go to Q5
   if (["q4a", "q4b", "q4c"].some(id => current && current.id === id)) {
     current.classList.remove("active");
     document.querySelector(`.question[data-question="5"]`).classList.add("active");
@@ -229,34 +236,30 @@ function nextQuestion() {
     return;
   }
 
-  // If on Question 5, finish the quiz
+  // Q5 → Finish
   if (currentQuestion === 5) {
     finishQuiz();
     return;
   }
 
-  // Default flow (just in case)
+  // Default flow
   currentQuestion++;
   const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
   if (next) next.classList.add("active");
   else finishQuiz();
 }
 
+// ✅ Enables submit only for certain answers
 function checkEligibility(qNum) {
   const radios = document.getElementsByName(`q${qNum}`);
   let selected = "";
   for (let r of radios) if (r.checked) selected = r.value;
 
   const submitBtn = document.getElementById(`submit${qNum}`);
-
-  // Example: only enable submit if "Yes" is chosen
-  if (selected === "Y") {
-    submitBtn.disabled = false;
-  } else {
-    submitBtn.disabled = true;
-  }
+  submitBtn.disabled = (selected !== "Y");
 }
 
+// ✅ Final screen
 function finishQuiz() {
   document.getElementById("quizForm").style.display = "none";
   document.getElementById("finalResult").style.display = "block";
