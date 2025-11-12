@@ -287,20 +287,19 @@ function finishQuiz() {
   const winners = [];
   const others = [];
   for (const track in finalScores) {
-    const normalized = (finalScores[track] / 3).toFixed(2); // normalized out of 3
-    if (finalScores[track] === maxScore) winners.push({track, score: normalized});
-    else others.push({track, score: normalized});
+    if (finalScores[track] === maxScore) winners.push(track);
+    else others.push(track);
   }
 
   // Construct display text
   let resultText = "";
 
   if (winners.length === 1) {
-    resultText += `Your top match is ${venueNames[winners[0].track]} with a score of ${winners[0].score}!\n\n`;
+    resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]}!\n\n`;
   } else {
-    resultText += `You have a tie between: ${winners.map(w => venueNames[w.track]).join(", ")}\n`;
+    resultText += `You have a tie between: ${winners.map(w => venueNames[w]).join(", ")}\n`;
     winners.forEach(w => {
-      resultText += `${venueNames[w.track]}: ${w.score}\n`;
+      resultText += `${venueNames[w]}: ${finalScores[w]}\n`;
     });
     resultText += "\n";
   }
@@ -308,7 +307,7 @@ function finishQuiz() {
   if (others.length) {
     resultText += "See also:\n";
     others.forEach(o => {
-      resultText += `${venueNames[o.track]}: ${o.score}\n`;
+      resultText += `${venueNames[o]}: ${finalScores[o]}\n`;
     });
   }
 
