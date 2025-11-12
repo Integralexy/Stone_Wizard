@@ -37,97 +37,89 @@
 </head>
 <body>
 
-<h2> So you want to get drunk and sing with this guy:</h2>
+<h2> You, me, karaoke: let’s see who can make the crowd cry for all the wrong reasons</h2>
 
 <form id="quizForm">
+
   <!-- Question 1 -->
-  <div class="question active" data-question="1" data-response="Interesting! Blue often symbolizes calmness and trust.">
-    <p> Which area will you be leaving from? </p>
-    <label><input type="radio" name="q1" value="U"> Udistrict </label><br>
-    <label><input type="radio" name="q1" value="F"> Fremont </label><br>
-    <label><input type="radio" name="q1" value="C"> Cap Hill </label><br>
-    <label><input type="radio" name="q1" value="N"> Northgate </label><br>
-    <label><input type="radio" name="q1" value="H"> Heaven 😉 </label><br>
+  <div class="question active" data-question="1">
+    <p>Which area will you be leaving from?</p>
+    <label><input type="radio" name="q1" value="U"> Udistrict</label><br>
+    <label><input type="radio" name="q1" value="F"> Fremont</label><br>
+    <label><input type="radio" name="q1" value="C"> Cap Hill</label><br>
+    <label><input type="radio" name="q1" value="N"> Northgate</label><br>
+    <label><input type="radio" name="q1" value="H"> Heaven 😉</label><br>
     <button type="button" onclick="submitAnswer(1)">Submit Answer</button>
     <div class="response" id="response1"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next1">Continue</button>
   </div>
 
   <!-- Question 2 -->
-  <div class="question" data-question="2" data-response="Good to know! Sleep is crucial for good health.">
-    <p> What vibes are you looking for? </p>
-    <label><input type="radio" name="q2" value="Monkey"> "Dive bar with carpet" </label><br>
-    <label><input type="radio" name="q2" value="Finns"> "Chill Cocktail bar with snacks" </label><br>
-    <label><input type="radio" name="q2" value="Rock"> "Sports bar with a hint of Celtic vibes" </label><br>
-    <label><input type="radio" name="q2" value="Hula"> "I've always wanted to go to a Luau" </label><br>
-    <label><input type="radio" name="q2" value="Fruit"> "Something a little fruity" </label><br>
+  <div class="question" data-question="2">
+    <p>What vibes are you looking for?</p>
+    <label><input type="radio" name="q2" value="Monk"> "Dive bar with carpet"</label><br>
+    <label><input type="radio" name="q2" value="Finn"> "Chill Cocktail bar with snacks"</label><br>
+    <label><input type="radio" name="q2" value="Rock"> "Sports bar with a hint of Celtic vibes"</label><br>
+    <label><input type="radio" name="q2" value="Hula"> "I've always wanted to go to a Luau"</label><br>
+    <label><input type="radio" name="q2" value="Fruit"> "Something a little fruity"</label><br>
     <button type="button" onclick="submitAnswer(2)">Submit Answer</button>
     <div class="response" id="response2"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next2">Continue</button>
   </div>
-  
 
   <!-- Question 3 -->
-  <div class="question" data-question="3" data-response="Good to know! Sleep is crucial for good health.">
-    <p> Do you prefer singing infront of an audience or just among friends? </p>
-    <label><input type="radio" name="q3" value="star"> "I am the star" </label><br>
-    <label><input type="radio" name="q3" value="shy"> "I'm a bit shy" </label><br>
-    <label><input type="radio" name="q3" value="none"> "I don't have a preference" </label><br>
+  <div class="question" data-question="3">
+    <p>Do you prefer singing in front of an audience or just among friends?</p>
+    <label><input type="radio" name="q3" value="star"> "I am the star"</label><br>
+    <label><input type="radio" name="q3" value="shy"> "I'm a bit shy"</label><br>
+    <label><input type="radio" name="q3" value="none"> "I don't have a preference"</label><br>
     <button type="button" onclick="submitAnswer(3)">Submit Answer</button>
-    <div class="response" id="response2"></div>
+    <div class="response" id="response3"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next3">Continue</button>
   </div>
 
-    <!-- Q4 -->
-  <div class="question active" data-question="4">
-    <p>Before you get five drinks in, whats your first order?</p>
-    <label><input type="radio" name="q4" value="beer"> A beer </label><br>
-    <label><input type="radio" name="q4" value="cider"> "A cider" </label><br>
-    <label><input type="radio" name="q4" value="wine"> "Wine" </label><br>
-    <label><input type="radio" name="q4" value="shot"> "A shot" </label><br>
+  <!-- Question 4 -->
+  <div class="question" data-question="4">
+    <p>Before you get five drinks in, what's your first order?</p>
+    <label><input type="radio" name="q4" value="beer"> A beer</label><br>
+    <label><input type="radio" name="q4" value="cider"> A cider</label><br>
+    <label><input type="radio" name="q4" value="wine"> Wine</label><br>
+    <label><input type="radio" name="q4" value="shot"> A shot</label><br>
     <button type="button" onclick="submitAnswer(4)">Submit Answer</button>
     <div class="response" id="response4"></div>
 
-    <!-- Conditional sub-questions (hidden by default) -->
+    <!-- Conditional sub-questions -->
     <div id="q4a" class="question sub">
       <p>What kind of beer?</p>
-      <label><input type="radio" name="q4a" value="IPA"> An IPA </label><br>
-      <label><input type="radio" name="q4a" value="dark"> Something dark </label><br>
-      <label><input type="radio" name="q4a" value="cheap"> The cheaper the better </label><br>
+      <label><input type="radio" name="q4a" value="IPA"> An IPA</label><br>
+      <label><input type="radio" name="q4a" value="dark"> Something dark</label><br>
+      <label><input type="radio" name="q4a" value="cheap"> The cheaper the better</label><br>
       <button type="button" onclick="submitAnswer('4a')">Submit Answer</button>
       <div class="response" id="response4a"></div>
       <button type="button" onclick="nextQuestion()" style="display:none;" id="next4a">Continue</button>
     </div>
 
     <div id="q4b" class="question sub">
-      <p> What kind of wine? </p>
-      <label><input type="radio" name="q4b" value="red"> Red </label><br>
-      <label><input type="radio" name="q4b" value="rose"> Rosé </label><br>
-      <label><input type="radio" name="q4b" value="white"> White </label><br>
+      <p>What kind of wine?</p>
+      <label><input type="radio" name="q4b" value="red"> Red</label><br>
+      <label><input type="radio" name="q4b" value="rose"> Rosé</label><br>
+      <label><input type="radio" name="q4b" value="white"> White</label><br>
       <button type="button" onclick="submitAnswer('4b')">Submit Answer</button>
       <div class="response" id="response4b"></div>
       <button type="button" onclick="nextQuestion()" style="display:none;" id="next4b">Continue</button>
     </div>
 
     <div id="q4c" class="question sub">
-      <p> What kind of shot? </p>
-      <label><input type="radio" name="q4c" value="vod"> Vodka </label><br>
-      <label><input type="radio" name="q4c" value="teq"> Tequila </label><br>
-      <label><input type="radio" name="q4c" value="whis"> Whiskey </label><br>
+      <p>What kind of shot?</p>
+      <label><input type="radio" name="q4c" value="vod"> Vodka</label><br>
+      <label><input type="radio" name="q4c" value="teq"> Tequila</label><br>
+      <label><input type="radio" name="q4c" value="whis"> Whiskey</label><br>
       <button type="button" onclick="submitAnswer('4c')">Submit Answer</button>
       <div class="response" id="response4c"></div>
       <button type="button" onclick="nextQuestion()" style="display:none;" id="next4c">Continue</button>
     </div>
   </div>
-  
-  <!-- Question 3 -->
-  <div class="question" data-question="3" data-response="That's inspiring! Motivation keeps us going.">
-    <p>3. What motivates you most?</p>
-    <input type="text" name="q3" placeholder="Your answer here" style="width:100%;padding:8px;"><br>
-    <button type="button" onclick="submitAnswer(3)">Submit Answer</button>
-    <div class="response" id="response3"></div>
-    <button type="button" onclick="nextQuestion()" style="display:none;" id="next3">Submit All</button>
-  </div>
+
 </form>
 
 <div id="finalResult" style="display:none; background:#e2f0d9; padding:15px; border-radius:8px; margin-top:20px;">
@@ -137,120 +129,81 @@
 
 <script>
 let currentQuestion = 1;
-const totalQuestions = 3;
 const answers = {};
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec"; // <--- Replace with your Apps Script URL
+const SCRIPT_URL = "YOUR_APPS_SCRIPT_URL"; // Replace with your Apps Script URL
 
-
-  const responses = {
-  1: {
-    "U": "You must study hard! 👩‍🏫",
-    "F": "Its giving artsy! 👩‍🎨",
-    "C": "You definitely know how to party! 🥳",
-    "N": "Very refined and mature! 🎩",
-    "H": "I had a feeling, but didn't want to assume 😏"
-  },
-  2: {
-    "Monk": "Then you can beat me in a game of pool afterwards 🎱",
-    "Finn": "Hopefully you like Guinness ☘️",
-    "Rock": "I too like to feel fancy 🍸 (and enjoy snacks)",
-    "Hula": "I'll need an umbrella in my drink 🍹",
-    "Fruit": "Good thing we're in Seattle 🏙️"
-  }
-  3: {
-    "star": "I commend your bravery 🫡",
-    "shy": "Same, I'm just a lil guy 🥺👉👈",
-    "none": "No problem! I'll embarrass myself either way 🗣️"
-  },
-  4: {
-    "beer": " ",
-    "cider": "Is this how you got so sweet? 😜",
-    "wine": " ",
-    "shot": " "
-  },
-  "4a": {
-    "IPA": "Are we talking beer or the International Phonetic Alphabet? 🔤",
-    "dark": "First round is definitely on me 🍻",
-    "cheap": "Ah, a connoisseur of the financially efficient lager 🍺"
-  },
-  "4b": {
-    "red": "Pairs well with good company 🍷",
-    "rose": "Maybe one as sweet as you? 🌹",
-    "white": "Perfect — something light to match that smile 😌"
-  },
-  "4c": {
-    "vod": "I too like to live dangerously ⚠️",
-    "teq": "Tequila makes me want to dance 🕺",
-    "whis": "Whiskey on the rocks? I might start melting 🥃"
-  },
+const responses = {
+  1: { "U": "You must study hard! 👩‍🏫", "F": "Its giving artsy! 👩‍🎨", "C": "You definitely know how to party! 🥳", "N": "Very refined and mature! 🎩", "H": "I had a feeling, but didn't want to assume 😏" },
+  2: { "Monk": "Then you can beat me in a game of pool afterwards 🎱", "Finn": "Hopefully you like Guinness ☘️", "Rock": "I too like to feel fancy 🍸 (and enjoy snacks)", "Hula": "I'll need an umbrella in my drink 🍹", "Fruit": "Good thing we're in Seattle 🏙️" },
+  3: { "star": "I commend your bravery 🫡", "shy": "Same, I'm just a lil guy 🥺👉👈", "none": "No problem! I'll embarrass myself either way 🗣️" },
+  4: { "beer": " ", "cider": "Is this how you got so sweet? 😜", "wine": " ", "shot": " " },
+  "4a": { "IPA": "Are we talking beer or the International Phonetic Alphabet? 🔤", "dark": "First round is definitely on me 🍻", "cheap": "Ah, a connoisseur of the financially efficient lager 🍺" },
+  "4b": { "red": "Pairs well with good company 🍷", "rose": "Maybe one as sweet as you? 🌹", "white": "Perfect — something light to match that smile 😌" },
+  "4c": { "vod": "I too like to live dangerously ⚠️", "teq": "Tequila makes me want to dance 🕺", "whis": "Whiskey on the rocks? I might start melting 🥃" }
 };
-  
 
 function submitAnswer(qNum) {
-  const questionDiv = (typeof qNum === "string") 
-    ? document.getElementById(`q${qNum}`)
-    : document.querySelector(`.question[data-question="${qNum}"]`);
-
+  const questionDiv = (typeof qNum === "string") ? document.getElementById("q" + qNum) : document.querySelector(`.question[data-question="${qNum}"]`);
   const inputs = questionDiv.querySelectorAll('input');
   let value = null;
 
-  inputs.forEach(input => {
-    if (input.type === 'radio' && input.checked) value = input.value;
-  });
+  inputs.forEach(input => { if (input.type === 'radio' && input.checked) value = input.value; });
 
-  if (!value) {
-    alert("Please select an answer first!");
-    return;
-  }
+  if (!value) { alert("Please select an answer first!"); return; }
 
-  answers[`q${qNum}`] = value;
-  let responseText = responses[qNum][value] || "Interesting choice!";
-  const responseDiv = document.getElementById(`response${qNum}`);
+  answers["q" + qNum] = value;
+  const responseText = responses[qNum][value] || "Interesting choice!";
+  const responseDiv = document.getElementById("response" + qNum);
   responseDiv.textContent = responseText;
   responseDiv.style.display = "block";
 
-  // Conditional branching: reveal sub-questions
-  if (qNum === 1) {
-    if (value === "Yes") {
-      document.getElementById("q1a").style.display = "block";
-      document.getElementById("q1b").style.display = "none";
-    } else {
-      document.getElementById("q1b").style.display = "block";
-      document.getElementById("q1a").style.display = "none";
-    }
-  } else {
-    // show continue button for regular or sub-question
-    const nextBtn = document.getElementById(`next${qNum}`);
-    if (nextBtn) nextBtn.style.display = "inline-block";
+  // Conditional sub-questions for Question 4
+  if (qNum === 4) {
+    document.getElementById("q4a").style.display = (value === "beer") ? "block" : "none";
+    document.getElementById("q4b").style.display = (value === "wine") ? "block" : "none";
+    document.getElementById("q4c").style.display = (value === "shot") ? "block" : "none";
   }
 
-  // Record in Google Sheet (including emoji response)
+  // Show continue button for this question
+  const nextBtn = document.getElementById("next" + qNum);
+  if (nextBtn) nextBtn.style.display = "inline-block";
+
+  // Record in Google Sheet
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      question: `Question ${qNum}`,
-      answer: value,
-      response: responseText
-    })
+    body: JSON.stringify({ question: "Question " + qNum, answer: value, response: responseText })
   });
 }
 
 function nextQuestion() {
-  const current = document.querySelector(`.question[data-question="${currentQuestion}"]`);
-  if (current) current.classList.remove('active');
-  currentQuestion++;
-  document.querySelector(`.question[data-question="${currentQuestion}"]`).classList.add('active');
+  const current = document.querySelector(`.question.active`);
+  if (current) current.classList.remove("active");
+
+  if (currentQuestion === 3) {
+    // Reveal Question 4 after Q3
+    document.querySelector(`.question[data-question="4"]`).classList.add("active");
+    currentQuestion = 4;
+  } else if (currentQuestion >= 4) {
+    // Handle sub-questions (4a,4b,4c)
+    const nextSub = document.querySelector(".question.sub[style*='block']");
+    if (nextSub) { nextSub.classList.add("active"); nextSub.scrollIntoView({behavior:"smooth"}); return; }
+    else { finishQuiz(); }
+  } else {
+    currentQuestion++;
+    const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
+    if (next) next.classList.add("active");
+    else finishQuiz();
+  }
 }
 
 function finishQuiz() {
-  document.getElementById('quizForm').style.display = 'none';
-  document.getElementById('finalResult').style.display = 'block';
+  document.getElementById("quizForm").style.display = "none";
+  document.getElementById("finalResult").style.display = "block";
   console.log("All answers:", answers);
 }
 </script>
 
 </body>
 </html>
-
