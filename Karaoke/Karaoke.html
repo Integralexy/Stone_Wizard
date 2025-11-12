@@ -184,43 +184,66 @@ function submitAnswer(qNum) {
 }
 
 function nextQuestion() {
+  // Hide current active question
   const current = document.querySelector(".question.active, .question.sub.active");
   if (current) current.classList.remove("active");
 
-  // after Q3 -> Q4
+  // Q1 → Q2
+  if (currentQuestion === 1) {
+    document.querySelector('[data-question="2"]').classList.add("active");
+    currentQuestion = 2;
+    return;
+  }
+
+  // Q2 → Q3
+  if (currentQuestion === 2) {
+    document.querySelector('[data-question="3"]').classList.add("active");
+    currentQuestion = 3;
+    return;
+  }
+
+  // Q3 → Q4
   if (currentQuestion === 3) {
     document.querySelector('[data-question="4"]').classList.add("active");
-    document.querySelector('[data-question="4"]').scrollIntoView({behavior:"smooth"});
-    currentQuestion = 4; return;
+    currentQuestion = 4;
+    return;
   }
 
-  // after Q4 (main)
+  // Q4 → sub-question or Q5
   if (currentQuestion === 4) {
-    if (document.getElementById("q4a").style.display === "block") {document.getElementById("q4a").classList.add("active");return;}
-    if (document.getElementById("q4b").style.display === "block") {document.getElementById("q4b").classList.add("active");return;}
-    if (document.getElementById("q4c").style.display === "block") {document.getElementById("q4c").classList.add("active");return;}
-    document.querySelector('[data-question="5"]').classList.add("active");
-    document.querySelector('[data-question="5"]').scrollIntoView({behavior:"smooth"});
-    currentQuestion = 5; return;
+    const q4Sub = ["q4a", "q4b", "q4c"].find(id => document.getElementById(id).style.display === "block");
+    if (q4Sub) {
+      document.getElementById(q4Sub).classList.add("active");
+      return;
+    } else {
+      // no sub-question, go straight to Q5
+      document.querySelector('[data-question="5"]').classList.add("active");
+      currentQuestion = 5;
+      return;
+    }
   }
 
-  // ✅ after sub-question 4a/b/c -> Q5
-  if (["q4a","q4b","q4c"].includes(current?.id)) {
+  // After any Q4 sub-question → Q5
+  if (["q4a", "q4b", "q4c"].includes(current?.id)) {
     document.querySelector('[data-question="5"]').classList.add("active");
-    document.querySelector('[data-question="5"]').scrollIntoView({behavior:"smooth"});
-    currentQuestion = 5; return;
+    currentQuestion = 5;
+    return;
   }
 
-  // after Q5 -> finish
-  if (currentQuestion === 5) { finishQuiz(); return; }
+  // Q5 → finish
+  if (currentQuestion === 5) {
+    finishQuiz();
+    return;
+  }
 
-  // default move forward
+  // Default: move to next question by data-question number
   currentQuestion++;
   const next = document.querySelector(`[data-question="${currentQuestion}"]`);
   if (next) {
     next.classList.add("active");
-    next.scrollIntoView({behavior:"smooth"});
-  } else finishQuiz();
+  } else {
+    finishQuiz();
+  }
 }
 
 function checkEligibility(qNum) {
