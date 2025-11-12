@@ -78,49 +78,48 @@
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next3">Continue</button>
   </div>
 
+  <!-- Question 4 -->
   <div class="question" data-question="4">
-  <p>Before you get five drinks in, what's your first order?</p>
-  <label><input type="radio" name="q4" value="beer"> A beer</label><br>
-  <label><input type="radio" name="q4" value="cider"> A cider</label><br>
-  <label><input type="radio" name="q4" value="wine"> Wine</label><br>
-  <label><input type="radio" name="q4" value="shot"> A shot</label><br>
-  <button type="button" onclick="submitAnswer(4)">Submit Answer</button>
-  <div class="response" id="response4"></div>
-  <button type="button" onclick="nextQuestion()" style="display:none;" id="next4">Continue</button>
-</div>
+    <p>Before you get five drinks in, what's your first order?</p>
+    <label><input type="radio" name="q4" value="beer"> A beer</label><br>
+    <label><input type="radio" name="q4" value="cider"> A cider</label><br>
+    <label><input type="radio" name="q4" value="wine"> Wine</label><br>
+    <label><input type="radio" name="q4" value="shot"> A shot</label><br>
+    <button type="button" onclick="submitAnswer(4)">Submit Answer</button>
+    <div class="response" id="response4"></div>
+    <button type="button" onclick="nextQuestion()" style="display:none;" id="next4">Continue</button>
+  </div>
 
-<!-- Q4a -->
-<div class="question" data-question="4a">
-  <p>What kind of beer?</p>
-  <label><input type="radio" name="q4a" value="IPA"> An IPA</label><br>
-  <label><input type="radio" name="q4a" value="dark"> Something dark</label><br>
-  <label><input type="radio" name="q4a" value="cheap"> The cheaper the better</label><br>
-  <button type="button" onclick="submitAnswer('4a')">Submit Answer</button>
-  <div class="response" id="response4a"></div>
-  <button type="button" onclick="nextQuestion()" style="display:none;" id="next4a">Continue</button>
-</div>
+  <!-- Sub-questions -->
+  <div class="question" data-question="4a">
+    <p>What kind of beer?</p>
+    <label><input type="radio" name="q4a" value="IPA"> An IPA</label><br>
+    <label><input type="radio" name="q4a" value="dark"> Something dark</label><br>
+    <label><input type="radio" name="q4a" value="cheap"> The cheaper the better</label><br>
+    <button type="button" onclick="submitAnswer('4a')">Submit Answer</button>
+    <div class="response" id="response4a"></div>
+    <button type="button" onclick="nextQuestion()" style="display:none;" id="next4a">Continue</button>
+  </div>
 
-<!-- Q4b -->
-<div class="question" data-question="4b">
-  <p>What kind of wine?</p>
-  <label><input type="radio" name="q4b" value="red"> Red</label><br>
-  <label><input type="radio" name="q4b" value="rose"> Rosé</label><br>
-  <label><input type="radio" name="q4b" value="white"> White</label><br>
-  <button type="button" onclick="submitAnswer('4b')">Submit Answer</button>
-  <div class="response" id="response4b"></div>
-  <button type="button" onclick="nextQuestion()" style="display:none;" id="next4b">Continue</button>
-</div>
+  <div class="question" data-question="4b">
+    <p>What kind of wine?</p>
+    <label><input type="radio" name="q4b" value="red"> Red</label><br>
+    <label><input type="radio" name="q4b" value="rose"> Rosé</label><br>
+    <label><input type="radio" name="q4b" value="white"> White</label><br>
+    <button type="button" onclick="submitAnswer('4b')">Submit Answer</button>
+    <div class="response" id="response4b"></div>
+    <button type="button" onclick="nextQuestion()" style="display:none;" id="next4b">Continue</button>
+  </div>
 
-<!-- Q4c -->
-<div class="question" data-question="4c">
-  <p>What kind of shot?</p>
-  <label><input type="radio" name="q4c" value="vod"> Vodka</label><br>
-  <label><input type="radio" name="q4c" value="teq"> Tequila</label><br>
-  <label><input type="radio" name="q4c" value="whis"> Whiskey</label><br>
-  <button type="button" onclick="submitAnswer('4c')">Submit Answer</button>
-  <div class="response" id="response4c"></div>
-  <button type="button" onclick="nextQuestion()" style="display:none;" id="next4c">Continue</button>
-</div>
+  <div class="question" data-question="4c">
+    <p>What kind of shot?</p>
+    <label><input type="radio" name="q4c" value="vod"> Vodka</label><br>
+    <label><input type="radio" name="q4c" value="teq"> Tequila</label><br>
+    <label><input type="radio" name="q4c" value="whis"> Whiskey</label><br>
+    <button type="button" onclick="submitAnswer('4c')">Submit Answer</button>
+    <div class="response" id="response4c"></div>
+    <button type="button" onclick="nextQuestion()" style="display:none;" id="next4c">Continue</button>
+  </div>
 
   <!-- Question 5 -->
   <div class="question" data-question="5">
@@ -133,6 +132,7 @@
     <div class="response" id="response5"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next5">Continue</button>
   </div>
+
 </form>
 
 <div id="finalResult" style="display:none;background:#e2f0d9;padding:15px;border-radius:8px;margin-top:20px;">
@@ -156,7 +156,7 @@ const responses = {
 };
 
 function submitAnswer(qNum) {
-  const qDiv = (typeof qNum === "string") ? document.getElementById("q" + qNum)
+  const qDiv = (typeof qNum === "string") ? document.querySelector(`[data-question="${qNum}"]`)
                                           : document.querySelector(`.question[data-question="${qNum}"]`);
   const inputs = qDiv.querySelectorAll('input');
   let value = null;
@@ -173,11 +173,9 @@ function submitAnswer(qNum) {
   const nextBtn = document.getElementById("next" + qNum);
   if (nextBtn) nextBtn.style.display = "inline-block";
 
-  // conditional sub-questions
-  if (qNum === 4) {
-    document.getElementById("q4a").style.display = (value === "beer") ? "block" : "none";
-    document.getElementById("q4b").style.display = (value === "wine") ? "block" : "none";
-    document.getElementById("q4c").style.display = (value === "shot") ? "block" : "none";
+  // Q4 special: skip sub-questions for cider
+  if (qNum === 4 && value === "cider") {
+    currentQuestion = 5;
   }
 
   fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},
@@ -185,66 +183,31 @@ function submitAnswer(qNum) {
 }
 
 function nextQuestion() {
-  // Hide current active question
-  const current = document.querySelector(".question.active, .question.sub.active");
+  const current = document.querySelector(".question.active");
   if (current) current.classList.remove("active");
 
-  // Q1 → Q2
-  if (currentQuestion === 1) {
-    document.querySelector('[data-question="2"]').classList.add("active");
-    currentQuestion = 2;
-    return;
-  }
-
-  // Q2 → Q3
-  if (currentQuestion === 2) {
-    document.querySelector('[data-question="3"]').classList.add("active");
-    currentQuestion = 3;
-    return;
-  }
-
-  // Q3 → Q4
-  if (currentQuestion === 3) {
-    document.querySelector('[data-question="4"]').classList.add("active");
-    currentQuestion = 4;
-    return;
-  }
-
-  // Q4 → sub-question or Q5
+  // Linear question flow
   if (currentQuestion === 4) {
-    const q4Sub = ["q4a", "q4b", "q4c"].find(id => document.getElementById(id).style.display === "block");
-    if (q4Sub) {
-      document.getElementById(q4Sub).classList.add("active");
-      return;
-    } else {
-      // no sub-question, go straight to Q5
-      document.querySelector('[data-question="5"]').classList.add("active");
-      currentQuestion = 5;
-      return;
-    }
-  }
-
-  // After any Q4 sub-question → Q5
-  if (["q4a", "q4b", "q4c"].includes(current?.id)) {
-    document.querySelector('[data-question="5"]').classList.add("active");
-    currentQuestion = 5;
-    return;
-  }
-
-  // Q5 → finish
-  if (currentQuestion === 5) {
+    // beer → 4a, wine → 4b, shot → 4c, cider → 5
+    if (answers.q4 === "beer") currentQuestion = "4a";
+    else if (answers.q4 === "wine") currentQuestion = "4b";
+    else if (answers.q4 === "shot") currentQuestion = "4c";
+    else currentQuestion = 5;
+  } 
+  else if (["4a","4b","4c"].includes(currentQuestion)) {
+    currentQuestion = 5; // After sub-question → Q5
+  } 
+  else if (currentQuestion === 5) {
     finishQuiz();
     return;
+  } 
+  else {
+    currentQuestion++;
   }
 
-  // Default: move to next question by data-question number
-  currentQuestion++;
   const next = document.querySelector(`[data-question="${currentQuestion}"]`);
-  if (next) {
-    next.classList.add("active");
-  } else {
-    finishQuiz();
-  }
+  if (next) next.classList.add("active");
+  else finishQuiz();
 }
 
 function checkEligibility(qNum) {
