@@ -141,7 +141,7 @@
 <script>
 let currentQuestion = 1;
 const answers = {};
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec"; // Replace with your Apps Script URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec";
 
 const responses = {
   1: { "U": "You must study hard! 👩‍🏫", "F": "Its giving artsy! 👩‍🎨", "C": "You definitely know how to party! 🥳", "H": "I had a feeling, but didn't want to assume 😏" },
@@ -154,12 +154,12 @@ const responses = {
   5: { "N": " ", "Y": "Staaawwppp 🫣😏", "K": "Fair enough 🤷‍♂️" }
 };
 
-// ✅ Handles all questions & sub-questions
+// Handle submit for all questions
 function submitAnswer(qNum) {
-  const questionDiv = (typeof qNum === "string") 
-    ? document.getElementById("q" + qNum) 
+  const questionDiv = (typeof qNum === "string")
+    ? document.getElementById("q" + qNum)
     : document.querySelector(`.question[data-question="${qNum}"]`);
-    
+
   const inputs = questionDiv.querySelectorAll('input');
   let value = null;
   inputs.forEach(input => { if (input.type === 'radio' && input.checked) value = input.value; });
@@ -172,18 +172,29 @@ function submitAnswer(qNum) {
   responseDiv.textContent = responseText;
   responseDiv.style.display = "block";
 
-  // ✅ Always show Continue button for any question/sub-question
+  // ✅ Always show Continue button
   const nextBtn = document.getElementById("next" + qNum);
   if (nextBtn) nextBtn.style.display = "inline-block";
 
-  // ✅ Conditional sub-questions for Question 4
+  // ✅ Conditional sub-questions for Q4
   if (qNum === 4) {
-    document.getElementById("q4a").style.display = (value === "beer") ? "block" : "none";
-    document.getElementById("q4b").style.display = (value === "wine") ? "block" : "none";
-    document.getElementById("q4c").style.display = (value === "shot") ? "block" : "none";
+    const showBeer = value === "beer";
+    const showWine = value === "wine";
+    const showShot = value === "shot";
+
+    document.getElementById("q4a").style.display = showBeer ? "block" : "none";
+    document.getElementById("q4b").style.display = showWine ? "block" : "none";
+    document.getElementById("q4c").style.display = showShot ? "block" : "none";
+
+    // If no sub-question (like cider), automatically allow continue to Q5
+    if (!showBeer && !showWine && !showShot) {
+      document.getElementById("next4").setAttribute("data-next", "5");
+    } else {
+      document.getElementById("next4").removeAttribute("data-next");
+    }
   }
 
-  // ✅ Record in Google Sheet
+  // Log to Google Sheets
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
@@ -192,74 +203,72 @@ function submitAnswer(qNum) {
   });
 }
 
-// ✅ Moves between questions and sub-questions
+// ✅ Navigation logic
 function nextQuestion() {
   const current = document.querySelector(`.question.active`);
   if (current) current.classList.remove("active");
 
-  // From Q3 → show Q4
+  // Q3 → Q4
   if (currentQuestion === 3) {
     document.querySelector(`.question[data-question="4"]`).classList.add("active");
     currentQuestion = 4;
     return;
   }
 
-  // From Q4 → sub-question if one is visible
+  // Q4 → sub-question or Q5
   if (currentQuestion === 4) {
     if (document.getElementById("q4a").style.display === "block") {
       document.getElementById("q4a").classList.add("active");
-      document.getElementById("q4a").scrollIntoView({behavior: "smooth"});
+      document.getElementById("q4a").scrollIntoView({behavior:"smooth"});
       return;
     }
     if (document.getElementById("q4b").style.display === "block") {
       document.getElementById("q4b").classList.add("active");
-      document.getElementById("q4b").scrollIntoView({behavior: "smooth"});
+      document.getElementById("q4b").scrollIntoView({behavior:"smooth"});
       return;
     }
     if (document.getElementById("q4c").style.display === "block") {
       document.getElementById("q4c").classList.add("active");
-      document.getElementById("q4c").scrollIntoView({behavior: "smooth"});
+      document.getElementById("q4c").scrollIntoView({behavior:"smooth"});
       return;
     }
 
-    // No sub-question → go to Q5
+    // If cider or anything with no sub-question, go straight to Q5
     document.querySelector(`.question[data-question="5"]`).classList.add("active");
     currentQuestion = 5;
     return;
   }
 
-  // Leaving a sub-question (4a, 4b, 4c) → go to Q5
+  // Sub-question → Q5
   if (["q4a", "q4b", "q4c"].some(id => current && current.id === id)) {
-    current.classList.remove("active");
     document.querySelector(`.question[data-question="5"]`).classList.add("active");
     currentQuestion = 5;
     return;
   }
 
-  // Q5 → Finish
+  // Q5 → finish
   if (currentQuestion === 5) {
     finishQuiz();
     return;
   }
 
-  // Default flow
+  // Default fallback
   currentQuestion++;
   const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
   if (next) next.classList.add("active");
   else finishQuiz();
 }
 
-// ✅ Enables submit only for certain answers
+// ✅ Only enable submit for certain answers (Q5)
 function checkEligibility(qNum) {
   const radios = document.getElementsByName(`q${qNum}`);
   let selected = "";
   for (let r of radios) if (r.checked) selected = r.value;
-
   const submitBtn = document.getElementById(`submit${qNum}`);
   submitBtn.disabled = (selected !== "Y");
 }
 
-// ✅ Final screen
+// ✅ Show final screen
 function finishQuiz() {
   document.getElementById("quizForm").style.display = "none";
   document.getElementById("finalResult").style.display = "block";
