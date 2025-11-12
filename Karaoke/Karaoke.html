@@ -1,290 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seattle Karaoke Bars</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      padding: 20px;
-    }
-    .container {
-      background: #fff;
-      max-width: 600px;
-      margin: auto;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    select, input[type="radio"] {
-      margin-top: 5px;
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 16px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #result {
-      display: none;
-      margin-top: 20px;
-      font-weight: bold;
-      text-align: center;
-      color: green;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Questionnaire</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 40px auto;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  h2 {
+    color: #333;
+  }
+  .question {
+    display: none;
+    margin-bottom: 20px;
+  }
+  .question.active {
+    display: block;
+  }
+  .option {
+    margin: 10px 0;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  #result {
+    background: #e2f0d9;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+    margin-top: 20px;
+  }
+</style>
 </head>
-
-
-
-
-
-
-
-
-
-
-  
-
-  
 <body>
-  <div class="container">
-    <h1> Which Karaoke Bar Got You Fallin' in Love Tonight?</h1>
 
+<h2>Simple Questionnaire</h2>
 
-
-<!-- Always-shown Question 0 -->
-    <div class="question">
-      <label>Which area of Seattle are you located?</label>
-      <select id="q0">
-        <option value="">--Select--</option>
-        <option value="U">Udistrict</option>
-        <option value="B">Ballard</option>
-        <option value="F">Fremont</option>
-        <option value="C">Cap Hill</option>
-        <option value="D">Downtown</option>
-        <option value="N">Northgate</option>
-      </select>
-    </div>
-
-    
-    <!-- Question 1 -->
-    <div class="question">
-      <label>How committed are you to karaoke tonight?</label>
-      <select id="q1">
-        <option value="">--Select--</option>
-        <option value="yes">Very (Willing to travel to another area)</option>
-        <option value="yen">Ehh (Willing to travel somewhere close)</option>
-        <option value="no">I am a square (Won't travel)</option>
-      </select>
-    </div>
-
-    <!-- Conditional Question 2 -->
-    <div id="TransportQuestions" class="hidden">
-      <div class="question">
-        <label>What is your preferred mode of transportation?</label>
-        <select id="q2">
-          <option value="">--Select--</option>
-          <option value="Walk"> Walking </option>
-          <option value="Bike"> Biking </option>
-          <option value="Car"> Driving </option>
-          <option value="Tran"> Public Transit </option>
-          <option value="Chauff"> Uber/Lyft </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Always-shown Question 3 -->
-    <div class="question">
-      <label>Do you want nearby options for before/afterwards?</label>
-      <select id="q3">
-          <option value="">--Select--</option>
-          <option value="yes3"> Yes </option>
-          <option value="no3"> No </option>
-        </select>
-    </div>
-
-    <button id="submitBtn">Submit</button>
-
-    <div id="result"></div>
+<form id="quizForm">
+  <!-- Question 1 -->
+  <div class="question active" data-question="1">
+    <p>1. Which color do you like best?</p>
+    <label class="option"><input type="radio" name="q1" value="red"> Red</label><br>
+    <label class="option"><input type="radio" name="q1" value="blue"> Blue</label><br>
+    <label class="option"><input type="radio" name="q1" value="green"> Green</label><br>
+    <button type="button" onclick="nextQuestion()">Continue</button>
   </div>
 
+  <!-- Question 2 -->
+  <div class="question" data-question="2">
+    <p>2. How many hours do you sleep on average?</p>
+    <label class="option"><input type="radio" name="q2" value="4"> 4 or fewer</label><br>
+    <label class="option"><input type="radio" name="q2" value="6"> 5–6 hours</label><br>
+    <label class="option"><input type="radio" name="q2" value="8"> 7–8 hours</label><br>
+    <button type="button" onclick="nextQuestion()">Continue</button>
+  </div>
 
+  <!-- Question 3 -->
+  <div class="question" data-question="3">
+    <p>3. What motivates you most? (Enter your own answer)</p>
+    <input type="text" name="q3" placeholder="Your answer here" style="width:100%;padding:8px;">
+    <br><br>
+    <button type="button" onclick="showResult()">Submit</button>
+  </div>
+</form>
 
+<!-- Result Section -->
+<div id="result"></div>
 
+<script>
+let currentQuestion = 1;
+const totalQuestions = 3;
+const answers = {};
 
+function nextQuestion() {
+  // Save current answer
+  saveAnswer();
 
+  // Move to next question
+  const current = document.querySelector(`.question[data-question="${currentQuestion}"]`);
+  if (currentQuestion < totalQuestions) {
+    current.classList.remove('active');
+    currentQuestion++;
+    const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
+    next.classList.add('active');
+  }
+}
 
+function saveAnswer() {
+  const questionDiv = document.querySelector(`.question[data-question="${currentQuestion}"]`);
+  const inputs = questionDiv.querySelectorAll('input');
+  let value = null;
+  inputs.forEach(input => {
+    if (input.type === 'radio' && input.checked) {
+      value = input.value;
+    }
+    if (input.type === 'text') {
+      value = input.value.trim();
+    }
+  });
+  answers[`q${currentQuestion}`] = value;
+}
 
+function showResult() {
+  saveAnswer();
 
+  // Calculate score example (simple)
+  let score = 0;
+  if (answers.q1 === 'blue') score += 5;
+  if (answers.q2 === '8') score += 5;
+  if (answers.q3 && answers.q3.length > 0) score += 2;
 
+  // Store answers locally (optional)
+  localStorage.setItem('quizAnswers', JSON.stringify(answers));
 
-  
-  <script>
-    const q0 = document.getElementById('q0');
+  // Display result
+  const resultBox = document.getElementById('result');
+  resultBox.style.display = 'block';
+  resultBox.innerHTML = `
+    <h3>Your Results</h3>
+    <p>Score: <strong>${score}</strong></p>
+    <p>Your Answers:</p>
+    <pre>${JSON.stringify(answers, null, 2)}</pre>
+  `;
 
-    
-    const q1 = document.getElementById('q1');
-    const TransportQuestions = document.getElementById('TransportQuestions');
-    const submitBtn = document.getElementById('submitBtn');
-    const resultDiv = document.getElementById('result');
+  // Hide form
+  document.getElementById('quizForm').style.display = 'none';
+}
+</script>
 
-    // Conditional display
-    q1.addEventListener('change', () => {
-      if (q1.value === 'yes') {
-        TransportQuestions.classList.remove('hidden');
-      } else if (q1.value === 'yen') {
-        TransportQuestions.classList.remove('hidden');
-      } else {
-        TransportQuestions.classList.add('hidden');
-      }
-    });
-
-    const q2 = document.getElementById('q2');
-      
-
-
-    
-    // Scoring logic
-    submitBtn.addEventListener('click', () => {
-      let MonkPub = 0;
-      let Finns = 0;
-      let Nova = 0;
-      let Rock = 0;
-      let Hula = 0;
-      let Lounge = 0;
-
-
-
-
-      // MonkPub scoring
-
-      //Q0
-      if (q0.value === 'U') score += 5;
-      else if (q0.value === 'B') score += 3;
-      else if (q0.value === 'F') score += 4;
-      else if (q0.value === 'C') score += 2;
-      else if (q0.value === 'D') score += 1;
-      else if (q0.value === 'N') score += 4;
-
-      //Q2
-      
-      
-      //Finns scoring
-
-      //Q0
-      if (q0.value === 'U') score += 5;
-      else if (q0.value === 'B') score += 3;
-      else if (q0.value === 'F') score += 4;
-      else if (q0.value === 'C') score += 2;
-      else if (q0.value === 'D') score += 1;
-      else if (q0.value === 'N') score += 4;
-
-      //Q2
-
-
-      
-      
-      // Nova scoring
-
-      //Q0
-      if (q0.value === 'U') score += 5;
-      else if (q0.value === 'B') score += 3;
-      else if (q0.value === 'F') score += 4;
-      else if (q0.value === 'C') score += 2;
-      else if (q0.value === 'D') score += 1;
-      else if (q0.value === 'N') score += 4;
-
-      //Q2
-
-
-      
-      
-      // Rock scoring
-
-      //Q0
-      if (q0.value === 'U') score += 3;
-      else if (q0.value === 'B') score += 1;
-      else if (q0.value === 'F') score += 2;
-      else if (q0.value === 'C') score += 5;
-      else if (q0.value === 'D') score += 3;
-      else if (q0.value === 'N') score += 2.5;
-
-      //Q2
-
-
-      
-      
-      // Hula scoring
-
-      //Q0
-      if (q0.value === 'U') score += 3;
-      else if (q0.value === 'B') score += 1;
-      else if (q0.value === 'F') score += 2;
-      else if (q0.value === 'C') score += 5;
-      else if (q0.value === 'D') score += 3;
-      else if (q0.value === 'N') score += 2.5;
-
-      //Q2
-
-      
-      
-      //Lounge scoring
-
-      //Q0
-      if (q0.value === 'U') score += 3;
-      else if (q0.value === 'B') score += 1;
-      else if (q0.value === 'F') score += 2;
-      else if (q0.value === 'C') score += 5;
-      else if (q0.value === 'D') score += 3;
-      else if (q0.value === 'N') score += 2.5;
-
-      //Q2
-
-
-      
-      
-      
-
-      
-
-      // Q3 scoring
-      const q3 = parseInt(document.getElementById('q3').value);
-      if (!isNaN(q3)) {
-        if (q3 >= 5) score += 3;
-        else if (q3 >= 2) score += 2;
-        else score += 1;
-      }
-
-      // Show result
-      resultDiv.style.display = 'block';
-      resultDiv.textContent = `Your total activity score is: ${score} points!`;
-
-      // Scroll to result
-      resultDiv.scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
 </body>
 </html>
