@@ -37,8 +37,8 @@
 </head>
 <body>
 
-<h1 style="text-align: center;"> You, Me, Karaoke</h1>
-<h2 style="text-align: center;">Who can make the crowd cry for all the wrong reasons? </h2>
+<h1 style="text-align: center;">You, Me, Karaoke</h1>
+<h2 style="text-align: center;">Who can make the crowd cry for all the wrong reasons?</h2>
 
 <form id="quizForm">
 
@@ -88,6 +88,9 @@
     <button type="button" onclick="submitAnswer(4)">Submit Answer</button>
     <div class="response" id="response4"></div>
 
+    <!-- ✅ Added missing Continue button -->
+    <button type="button" onclick="nextQuestion()" style="display:none;" id="next4">Continue</button>
+
     <!-- Conditional sub-questions -->
     <div id="q4a" class="question sub">
       <p>What kind of beer?</p>
@@ -120,23 +123,23 @@
     </div>
   </div>
 
-<div class="question" data-question="5">
-  <p>What do you like about Andrew?</p>
-  <label><input type="radio" name="q5" value="N" onchange="checkEligibility(6)"> "A little weird" </label><br>
-  <label><input type="radio" name="q5" value="Y" onchange="checkEligibility(6)"> "Cute and Funny" </label><br>
-  <label><input type="radio" name="q5" value="N" onchange="checkEligibility(6)"> "He could use a haircut" </label><br>
-  <label><input type="radio" name="q5" value="K" onchange="checkEligibility(6)"> "I only want to meet his dogs" </label><br>
-  <button type="button" id="submit5" onclick="submitAnswer(5)" disabled>Submit Answer</button>
-  <div class="response" id="response5"></div>
-  <button type="button" onclick="nextQuestion()" style="display:none;" id="next5">Continue</button>
-</div>
- 
+  <!-- Question 5 -->
+  <div class="question" data-question="5">
+    <p>What do you like about Andrew?</p>
+    <label><input type="radio" name="q5" value="N" onchange="checkEligibility(5)"> "A little weird"</label><br>
+    <label><input type="radio" name="q5" value="Y" onchange="checkEligibility(5)"> "Cute and Funny"</label><br>
+    <label><input type="radio" name="q5" value="N" onchange="checkEligibility(5)"> "He could use a haircut"</label><br>
+    <label><input type="radio" name="q5" value="K" onchange="checkEligibility(5)"> "I only want to meet his dogs"</label><br>
+    <button type="button" id="submit5" onclick="submitAnswer(5)" disabled>Submit Answer</button>
+    <div class="response" id="response5"></div>
+    <button type="button" onclick="nextQuestion()" style="display:none;" id="next5">Continue</button>
+  </div>
+
 </form>
+
 <div id="finalResult" style="display:none; background:#e2f0d9; padding:15px; border-radius:8px; margin-top:20px;">
   <h3>Thank you for completing the questionnaire! Based on your responses, we suggest visiting:</h3>
-  
 </div>
-
 
 <script>
 let currentQuestion = 1;
@@ -154,7 +157,6 @@ const responses = {
   5: { "N": " ", "Y": "Staaawwppp 🫣😏", "K": "Fair enough 🤷‍♂️" }
 };
 
-// Handle submit for all questions
 function submitAnswer(qNum) {
   const questionDiv = (typeof qNum === "string")
     ? document.getElementById("q" + qNum)
@@ -172,29 +174,19 @@ function submitAnswer(qNum) {
   responseDiv.textContent = responseText;
   responseDiv.style.display = "block";
 
-  // ✅ Always show Continue button
   const nextBtn = document.getElementById("next" + qNum);
   if (nextBtn) nextBtn.style.display = "inline-block";
 
-  // ✅ Conditional sub-questions for Q4
+  // Handle conditional sub-questions for Q4
   if (qNum === 4) {
     const showBeer = value === "beer";
     const showWine = value === "wine";
     const showShot = value === "shot";
-
     document.getElementById("q4a").style.display = showBeer ? "block" : "none";
     document.getElementById("q4b").style.display = showWine ? "block" : "none";
     document.getElementById("q4c").style.display = showShot ? "block" : "none";
-
-    // If no sub-question (like cider), automatically allow continue to Q5
-    if (!showBeer && !showWine && !showShot) {
-      document.getElementById("next4").setAttribute("data-next", "5");
-    } else {
-      document.getElementById("next4").removeAttribute("data-next");
-    }
   }
 
-  // Log to Google Sheets
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
@@ -203,72 +195,52 @@ function submitAnswer(qNum) {
   });
 }
 
-// ✅ Navigation logic
 function nextQuestion() {
   const current = document.querySelector(`.question.active`);
   if (current) current.classList.remove("active");
 
-  // Q3 → Q4
+  // Move through questions
   if (currentQuestion === 3) {
     document.querySelector(`.question[data-question="4"]`).classList.add("active");
+    document.querySelector(`.question[data-question="4"]`).scrollIntoView({behavior:"smooth"});
     currentQuestion = 4;
     return;
   }
 
-  // Q4 → sub-question or Q5
   if (currentQuestion === 4) {
-    if (document.getElementById("q4a").style.display === "block") {
-      document.getElementById("q4a").classList.add("active");
-      document.getElementById("q4a").scrollIntoView({behavior:"smooth"});
-      return;
-    }
-    if (document.getElementById("q4b").style.display === "block") {
-      document.getElementById("q4b").classList.add("active");
-      document.getElementById("q4b").scrollIntoView({behavior:"smooth"});
-      return;
-    }
-    if (document.getElementById("q4c").style.display === "block") {
-      document.getElementById("q4c").classList.add("active");
-      document.getElementById("q4c").scrollIntoView({behavior:"smooth"});
-      return;
-    }
-
-    // If cider or anything with no sub-question, go straight to Q5
+    if (document.getElementById("q4a").style.display === "block") { document.getElementById("q4a").classList.add("active"); return; }
+    if (document.getElementById("q4b").style.display === "block") { document.getElementById("q4b").classList.add("active"); return; }
+    if (document.getElementById("q4c").style.display === "block") { document.getElementById("q4c").classList.add("active"); return; }
     document.querySelector(`.question[data-question="5"]`).classList.add("active");
+    document.querySelector(`.question[data-question="5"]`).scrollIntoView({behavior:"smooth"});
     currentQuestion = 5;
     return;
   }
 
-  // Sub-question → Q5
   if (["q4a", "q4b", "q4c"].some(id => current && current.id === id)) {
     document.querySelector(`.question[data-question="5"]`).classList.add("active");
+    document.querySelector(`.question[data-question="5"]`).scrollIntoView({behavior:"smooth"});
     currentQuestion = 5;
     return;
   }
 
-  // Q5 → finish
-  if (currentQuestion === 5) {
-    finishQuiz();
-    return;
-  }
+  if (currentQuestion === 5) { finishQuiz(); return; }
 
-  // Default fallback
   currentQuestion++;
   const next = document.querySelector(`.question[data-question="${currentQuestion}"]`);
-  if (next) next.classList.add("active");
-  else finishQuiz();
+  if (next) {
+    next.classList.add("active");
+    next.scrollIntoView({behavior:"smooth"});
+  } else finishQuiz();
 }
 
-// ✅ Only enable submit for certain answers (Q5)
 function checkEligibility(qNum) {
   const radios = document.getElementsByName(`q${qNum}`);
   let selected = "";
   for (let r of radios) if (r.checked) selected = r.value;
-  const submitBtn = document.getElementById(`submit${qNum}`);
-  submitBtn.disabled = (selected !== "Y");
+  document.getElementById(`submit${qNum}`).disabled = (selected !== "Y");
 }
 
-// ✅ Show final screen
 function finishQuiz() {
   document.getElementById("quizForm").style.display = "none";
   document.getElementById("finalResult").style.display = "block";
