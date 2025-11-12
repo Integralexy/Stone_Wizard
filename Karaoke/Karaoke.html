@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Questionnaire</title>
+<title> Karaoke Night </title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -44,15 +44,17 @@
 </head>
 <body>
 
-<h2>Interactive Questionnaire</h2>
+<h2> So you want to get drunk and sing with this guy:</h2>
 
 <form id="quizForm">
   <!-- Question 1 -->
   <div class="question active" data-question="1" data-response="Interesting! Blue often symbolizes calmness and trust.">
-    <p>1. Which color do you like best?</p>
-    <label><input type="radio" name="q1" value="Red"> Red</label><br>
-    <label><input type="radio" name="q1" value="Blue"> Blue</label><br>
-    <label><input type="radio" name="q1" value="Green"> Green</label><br>
+    <p> Which area will you be leaving from?</p>
+    <label><input type="radio" name="q1" value="U"> Udistrict </label><br>
+    <label><input type="radio" name="q1" value="F"> Fremont </label><br>
+    <label><input type="radio" name="q1" value="C"> Cap Hill </label><br>
+    <label><input type="radio" name="q1" value="N"> Northgate </label><br>
+    <label><input type="radio" name="q1" value="H"> Heaven ;) </label><br>
     <button type="button" onclick="submitAnswer(1)">Submit Answer</button>
     <div class="response" id="response1"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next1">Continue</button>
@@ -88,7 +90,29 @@
 let currentQuestion = 1;
 const totalQuestions = 3;
 const answers = {};
-const SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; // <--- Replace with your Apps Script URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec"; // <--- Replace with your Apps Script URL
+
+
+  const responses = {
+  1: {
+    "U": "You must study hard!",
+    "F": "Its giving artsy!",
+    "C": "You definitely know how to party!",
+    "N": "Very refined and mature!",
+    "H": "I could tell but didn't want to assume ;D",
+  },
+  2: {
+    "4": "That’s not much sleep — consider getting more rest.",
+    "6": "Better, but still could use a bit more sleep.",
+    "8": "Perfect! You’re well-rested and healthy."
+  },
+  3: {
+    "4": "That’s not much sleep — consider getting more rest.",
+    "6": "Better, but still could use a bit more sleep.",
+    "8": "Perfect! You’re well-rested and healthy."
+  }
+};
+  
 
 function submitAnswer(qNum) {
   const questionDiv = document.querySelector(`.question[data-question="${qNum}"]`);
@@ -114,16 +138,23 @@ function submitAnswer(qNum) {
   if (qNum === 2 && value === "8") score = 5;
   if (qNum === 3 && value.length > 0) score = 2;
 
+  // 🎯 Get conditional response text
+  let responseText = "";
+  if (typeof responses[qNum] === "object") {
+    responseText = responses[qNum][value] || "Interesting choice!";
+  } else {
+    responseText = responses[qNum];
+  }
+
   // Show response
-  const responseText = questionDiv.dataset.response;
   const responseDiv = document.getElementById(`response${qNum}`);
   responseDiv.textContent = responseText;
   responseDiv.style.display = "block";
 
-  // Show "Continue" button
+  // Show Continue button
   document.getElementById(`next${qNum}`).style.display = "inline-block";
 
-  // Send to Google Sheet
+  // Send data to Google Sheet
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
