@@ -136,7 +136,7 @@
 </form>
 
 <div id="finalResult" style="display:none;background:#e2f0d9;padding:15px;border-radius:8px;margin-top:20px;">
-  <h3>Thank you for completing the questionnaire!</h3>
+  <h3>Thank you for completing the questionnaire! According to your answers, you might want to check out: </h3>
 </div>
 
 <script>
@@ -221,11 +221,101 @@ function checkEligibility(qNum) {
   for (let r of radios) if (r.checked) val = r.value;
   document.getElementById(`submit${qNum}`).disabled = (val !== "Y");
 }
+// Initialize score trackers
+let scores = { M: 0, R: 0, F: 0, H: 0, C: 0 };
 
+// Define how each main question answer affects scores
+const scoreRules = {
+  q2: { // vibes
+    Monk: ["M"],
+    Rock: ["R"],
+    Finn: ["F"],
+    Hula: ["H"],
+    Fruit: ["C"]
+  },
+  q3: { // audience preference
+    star: ["M", "R", "F", "H", "C"],
+    shy: ["R"],
+    none: ["M", "R", "F", "H", "C"]
+  },
+  q4: { // first drink
+    beer: ["M", "F"],
+    cider: ["M", "F"],
+    wine: ["R", "C"],
+    shot: ["M", "R", "F", "H", "C"]
+  }
+};
+
+// Function to calculate scores based on main questions
+function calculateScores() {
+  // Reset scores
+  scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+
+  for (const q of ["q2", "q3", "q4"]) {
+    const val = answers[q];
+    if (val && scoreRules[q][val]) {
+      scoreRules[q][val].forEach(track => {
+        scores[track]++;
+      });
+    }
+  }
+
+  console.log("Scores from Q2, Q3, Q4:", scores);
+  return scores;
+}
+
+// Call this in your finishQuiz function
 function finishQuiz() {
   document.getElementById("quizForm").style.display = "none";
   document.getElementById("finalResult").style.display = "block";
+
+  const finalScores = calculateScores();
+
+  // Map variables to real venue names
+  const venueNames = {
+    M: "Monkey Pub",
+    R: "Rock Box",
+    F: "Finn Maccools",
+    H: "Hula Hula",
+    C: "Crescent Lounge"
+  };
+
+  // Find max score
+  const maxScore = Math.max(...Object.values(finalScores));
+
+  // Separate winners and others
+  const winners = [];
+  const others = [];
+  for (const track in finalScores) {
+    const normalized = (finalScores[track] / 3).toFixed(2); // normalized out of 3
+    if (finalScores[track] === maxScore) winners.push({track, score: normalized});
+    else others.push({track, score: normalized});
+  }
+
+  // Construct display text
+  let resultText = "";
+
+  if (winners.length === 1) {
+    resultText += `Your top match is ${venueNames[winners[0].track]} with a score of ${winners[0].score}!\n\n`;
+  } else {
+    resultText += `You have a tie between: ${winners.map(w => venueNames[w.track]).join(", ")}\n`;
+    winners.forEach(w => {
+      resultText += `${venueNames[w.track]}: ${w.score}\n`;
+    });
+    resultText += "\n";
+  }
+
+  if (others.length) {
+    resultText += "See also:\n";
+    others.forEach(o => {
+      resultText += `${venueNames[o.track]}: ${o.score}\n`;
+    });
+  }
+
+  document.getElementById("finalResult").innerText = resultText;
+
   console.log("All answers:", answers);
+  console.log("Final Scores:", finalScores);
 }
 </script>
 
