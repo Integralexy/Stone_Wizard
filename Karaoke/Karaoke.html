@@ -33,6 +33,9 @@
     cursor: pointer;
   }
   button:hover { background-color: #0056b3; }
+
+  /* FIX: hide quiz until Start is pressed */
+  #quizForm { display: none; }
 </style>
 </head>
 <body>
@@ -162,6 +165,8 @@ const responses = {
 
 function startQuiz() {
   document.getElementById("startScreen").style.display = "none";
+  document.getElementById("quizForm").style.display = "block";
+
   currentQuestion = 1;
   const firstQ = document.querySelector(`[data-question="${currentQuestion}"]`);
   if (firstQ) firstQ.classList.add("active");
@@ -171,17 +176,17 @@ function submitAnswer(qNum) {
   const qDiv = document.querySelector(`[data-question="${qNum}"]`);
   const inputs = qDiv.querySelectorAll('input');
   let value = null;
+
   inputs.forEach(i => { if (i.checked) value = i.value; });
+
   if (!value) { alert("Please select an answer first!"); return; }
 
   answers["q" + qNum] = value;
 
-  // Show response
   const rDiv = document.getElementById("response" + qNum);
-  rDiv.textContent = responses[qNum][value] || "Interesting choice!";
+  rDiv.textContent = responses[qNum]?.[value] || "Interesting choice!";
   rDiv.style.display = "block";
 
-  // Show continue button only if eligible
   const nextBtn = document.getElementById("next" + qNum);
   if (qNum === 5) {
     if (value === "Y") nextBtn.style.display = "inline-block";
@@ -195,20 +200,19 @@ function nextQuestion() {
   const currentDiv = document.querySelector(".question.active");
   if (currentDiv) currentDiv.classList.remove("active");
 
-  // Determine next question
   if (currentQuestion === 4) {
     if (answers.q4 === "beer") currentQuestion = "4a";
     else if (answers.q4 === "Cock") currentQuestion = "4b";
     else if (answers.q4 === "shot") currentQuestion = "4c";
-    else if (answers.q4 === "cider") currentQuestion = 5;
-  } 
+    else currentQuestion = 5;
+  }
   else if (["4a","4b","4c"].includes(currentQuestion)) {
     currentQuestion = 5;
-  } 
+  }
   else if (currentQuestion === 5) {
     finishQuiz();
     return;
-  } 
+  }
   else {
     currentQuestion++;
   }
@@ -230,13 +234,15 @@ function calculateScores() {
   scores = { M: 0, R: 0, F: 0, H: 0, C: 0 };
   for (const q of ["q2","q3","q4"]) {
     const val = answers[q];
-    if (val && scoreRules[q][val]) scoreRules[q][val].forEach(track => scores[track]++);
+    if (val && scoreRules[q][val]) {
+      scoreRules[q][val].forEach(track => scores[track]++);
+    }
   }
   return scores;
 }
 
-// 🔹 Google Sheet Integration
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec"; // ← replace this
+// Google Sheet Integration
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec";
 
 function sendToGoogleSheet(data) {
   fetch(GOOGLE_SCRIPT_URL, {
@@ -257,13 +263,15 @@ function finishQuiz() {
   const venueNames = { M: "Monkey Pub", R: "Rock Box", F: "Finn Maccools", H: "Hula Hula", C: "Crescent Lounge" };
 
   const maxScore = Math.max(...Object.values(finalScores));
-  const winners = [], others = [];
-  for (const key in finalScores) finalScores[key] === maxScore ? winners.push(key) : others.push(key);
+  const winners = Object.keys(finalScores).filter(k => finalScores[k] === maxScore);
+  const others = Object.keys(finalScores).filter(k => finalScores[k] !== maxScore);
 
   let resultText = "";
-  if (winners.length === 1) resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]]}!\n\n`;
-  else {
-    resultText += `You have a tie between: ${winners.map(w => venueNames[w]).join(", ")}\n`;
+
+  if (winners.length === 1) {
+    resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]}!\n\n`;
+  } else {
+    resultText += `You have a tie between: ${winners.map(w => venueNames[w]).join(", ")}\n\n`;
     winners.forEach(w => resultText += `${venueNames[w]}: ${finalScores[w]}\n`);
     resultText += "\n";
   }
@@ -274,10 +282,7 @@ function finishQuiz() {
   }
 
   document.getElementById("finalResult").innerText = resultText;
-  console.log("All answers:", answers);
-  console.log("Final Scores:", finalScores);
 
-  // ✅ Save responses to Google Sheet
   sendToGoogleSheet(answers);
 }
 </script>
