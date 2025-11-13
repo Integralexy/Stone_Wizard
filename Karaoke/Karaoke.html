@@ -40,7 +40,7 @@
 <h1 style="text-align:center;">You, Me, Karaoke</h1>
 <h2 style="text-align:center;">Who can make the crowd cry for all the wrong reasons?</h2>
 
-  <!-- Start Screen -->
+<!-- Start Screen -->
 <div id="startScreen" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:300px; text-align:center;">
   <h2>Take the quiz to find out where we should go:</h2>
   <button type="button" onclick="startQuiz()" style="padding: 12px 20px; font-size: 16px;">Start</button>
@@ -130,11 +130,11 @@
   <!-- Question 5 -->
   <div class="question" data-question="5">
     <p>What do you like about Andrew?</p>
-    <label><input type="radio" name="q5" value="N" onchange="checkEligibility(5)"> "A little weird"</label><br>
-    <label><input type="radio" name="q5" value="Y" onchange="checkEligibility(5)"> "Cute and Funny"</label><br>
-    <label><input type="radio" name="q5" value="N" onchange="checkEligibility(5)"> "He could use a haircut"</label><br>
-    <label><input type="radio" name="q5" value="N" onchange="checkEligibility(5)"> "I only want to meet his dogs"</label><br>
-    <button type="button" id="submit5" onclick="submitAnswer(5)" disabled>Submit Answer</button>
+    <label><input type="radio" name="q5" value="N"> "A little weird"</label><br>
+    <label><input type="radio" name="q5" value="Y"> "Cute and Funny"</label><br>
+    <label><input type="radio" name="q5" value="N"> "He could use a haircut"</label><br>
+    <label><input type="radio" name="q5" value="N"> "I only want to meet his dogs"</label><br>
+    <button type="button" onclick="submitAnswer(5)">Submit Answer</button>
     <div class="response" id="response5"></div>
     <button type="button" onclick="nextQuestion()" style="display:none;" id="next5">Continue</button>
   </div>
@@ -146,18 +146,8 @@
 </div>
 
 <script>
-let currentQuestion = 1;  // declare first
-
-function startQuiz() {
-  document.getElementById("startScreen").style.display = "none";
-  currentQuestion = 1;
-  const firstQ = document.querySelector(`[data-question="${currentQuestion}"]`);
-  if (firstQ) firstQ.classList.add("active");
-}
-  
-
+let currentQuestion = 1;
 const answers = {};
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec";
 
 const responses = {
   1: {U:"You must study hard! 👩‍🏫", F:"Its giving artsy! 👩‍🎨", C:"You definitely know how to party! 🥳", H:"I had a feeling, but didn't want to assume 😏"},
@@ -169,6 +159,13 @@ const responses = {
   "4c": {vod:"I too like to live dangerously ⚠️", teq:"Just so you know, tequila makes me want to dance 🕺", whis:"Whiskey on the rocks? I might start melting 🥃"},
   5: {N:"Invalid selection, please try again ", Y:"Staaawwppp 🫣😏"}
 };
+
+function startQuiz() {
+  document.getElementById("startScreen").style.display = "none";
+  currentQuestion = 1;
+  const firstQ = document.querySelector(`[data-question="${currentQuestion}"]`);
+  if (firstQ) firstQ.classList.add("active");
+}
 
 function submitAnswer(qNum) {
   const qDiv = document.querySelector(`[data-question="${qNum}"]`);
@@ -184,45 +181,29 @@ function submitAnswer(qNum) {
   rDiv.textContent = responses[qNum][value] || "Interesting choice!";
   rDiv.style.display = "block";
 
-  // Show continue button
+  // Show continue button only if eligible
   const nextBtn = document.getElementById("next" + qNum);
-  if (nextBtn) nextBtn.style.display = "inline-block";
-
-  // Enable submit button for Q5 if eligible
   if (qNum === 5) {
-  if (value === "Y") {
-    nextBtn.style.display = "inline-block"; // show continue
+    if (value === "Y") nextBtn.style.display = "inline-block";
+    else nextBtn.style.display = "none";
   } else {
-    nextBtn.style.display = "none"; // hide continue
+    if (nextBtn) nextBtn.style.display = "inline-block";
   }
-} else if (nextBtn) {
-  nextBtn.style.display = "inline-block"; // normal behavior for other questions
-}
-  }
-
-  // Send data to Google Script
-  fetch(SCRIPT_URL, {
-    method:"POST",
-    mode:"no-cors",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({question:"Question "+qNum, answer:value, response:rDiv.textContent})
-  });
 }
 
 function nextQuestion() {
-  const current = document.querySelector(".question.active");
-  if (current) current.classList.remove("active");
+  const currentDiv = document.querySelector(".question.active");
+  if (currentDiv) currentDiv.classList.remove("active");
 
   // Determine next question
   if (currentQuestion === 4) {
-    // Q4 flow → sub-questions or skip to 5 for cider
     if (answers.q4 === "beer") currentQuestion = "4a";
     else if (answers.q4 === "Cock") currentQuestion = "4b";
     else if (answers.q4 === "shot") currentQuestion = "4c";
     else if (answers.q4 === "cider") currentQuestion = 5;
   } 
   else if (["4a","4b","4c"].includes(currentQuestion)) {
-    currentQuestion = 5; // After sub-question, go to Q5
+    currentQuestion = 5;
   } 
   else if (currentQuestion === 5) {
     finishQuiz();
@@ -232,109 +213,53 @@ function nextQuestion() {
     currentQuestion++;
   }
 
-  const next = document.querySelector(`[data-question="${currentQuestion}"]`);
-  if (next) next.classList.add("active");
+  const nextDiv = document.querySelector(`[data-question="${currentQuestion}"]`);
+  if (nextDiv) nextDiv.classList.add("active");
   else finishQuiz();
 }
 
-function checkEligibility(qNum) {
-  const radios = document.getElementsByName(`q${qNum}`);
-  let val = "";
-  for (let r of radios) if (r.checked) val = r.value;
-  document.getElementById(`submit${qNum}`).disabled = (val !== "Y");
-}
-// Initialize score trackers
 let scores = { M: 0, R: 0, F: 0, H: 0, C: 0 };
 
-// Define how each main question answer affects scores
 const scoreRules = {
-  q2: { // vibes
-    Monk: ["M"],
-    Rock: ["R"],
-    Finn: ["F"],
-    Hula: ["H"],
-    Fruit: ["C"]
-  },
-  q3: { // audience preference
-    star: ["M", "R", "F", "H", "C"],
-    shy: ["R"],
-    none: ["M", "R", "F", "H", "C"]
-  },
-  q4: { // first drink
-    beer: ["M", "F"],
-    cider: ["M", "F"],
-    Cock: ["R", "C"],
-    shot: ["M", "R", "F", "H", "C"]
-  }
+  q2: { Monk: ["M"], Rock: ["R"], Finn: ["F"], Hula: ["H"], Fruit: ["C"] },
+  q3: { star: ["M","R","F","H","C"], shy: ["R"], none: ["M","R","F","H","C"] },
+  q4: { beer: ["M","F"], cider: ["M","F"], Cock: ["R","C"], shot: ["M","R","F","H","C"] }
 };
 
-// Function to calculate scores based on main questions
 function calculateScores() {
-  // Reset scores
   scores = { M: 0, R: 0, F: 0, H: 0, C: 0 };
-
-  for (const q of ["q2", "q3", "q4"]) {
+  for (const q of ["q2","q3","q4"]) {
     const val = answers[q];
-    if (val && scoreRules[q][val]) {
-      scoreRules[q][val].forEach(track => {
-        scores[track]++;
-      });
-    }
+    if (val && scoreRules[q][val]) scoreRules[q][val].forEach(track => scores[track]++);
   }
-
-  console.log("Scores from Q2, Q3, Q4:", scores);
   return scores;
 }
 
-// Call this in your finishQuiz function
 function finishQuiz() {
   document.getElementById("quizForm").style.display = "none";
   document.getElementById("finalResult").style.display = "block";
 
   const finalScores = calculateScores();
+  const venueNames = { M: "Monkey Pub", R: "Rock Box", F: "Finn Maccools", H: "Hula Hula", C: "Crescent Lounge" };
 
-  // Map variables to real venue names
-  const venueNames = {
-    M: "Monkey Pub",
-    R: "Rock Box",
-    F: "Finn Maccools",
-    H: "Hula Hula",
-    C: "Crescent Lounge"
-  };
-
-  // Find max score
   const maxScore = Math.max(...Object.values(finalScores));
+  const winners = [], others = [];
+  for (const key in finalScores) finalScores[key] === maxScore ? winners.push(key) : others.push(key);
 
-  // Separate winners and others
-  const winners = [];
-  const others = [];
-  for (const track in finalScores) {
-    if (finalScores[track] === maxScore) winners.push(track);
-    else others.push(track);
-  }
-
-  // Construct display text
   let resultText = "";
-
-  if (winners.length === 1) {
-    resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]}!\n\n`;
-  } else {
+  if (winners.length === 1) resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]}!\n\n`;
+  else {
     resultText += `You have a tie between: ${winners.map(w => venueNames[w]).join(", ")}\n`;
-    winners.forEach(w => {
-      resultText += `${venueNames[w]}: ${finalScores[w]}\n`;
-    });
+    winners.forEach(w => resultText += `${venueNames[w]}: ${finalScores[w]}\n`);
     resultText += "\n";
   }
 
   if (others.length) {
     resultText += "See also:\n";
-    others.forEach(o => {
-      resultText += `${venueNames[o]}: ${finalScores[o]}\n`;
-    });
+    others.forEach(o => resultText += `${venueNames[o]}: ${finalScores[o]}\n`);
   }
 
   document.getElementById("finalResult").innerText = resultText;
-
   console.log("All answers:", answers);
   console.log("Final Scores:", finalScores);
 }
