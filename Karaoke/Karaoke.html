@@ -108,7 +108,7 @@
   </div>
 
   <div class="question" data-question="4b">
-    <p>What kind of Cock?</p>
+    <p>What kind of Cocktail?</p>
     <label><input type="radio" name="q4b" value="marg"> Margarita </label><br>
     <label><input type="radio" name="q4b" value="cos"> Cosmo </label><br>
     <label><input type="radio" name="q4b" value="mar"> Martini </label><br>
@@ -164,9 +164,9 @@ const responses = {
   3: {star:"I commend your bravery 🫡", shy:"Same, I'm just a lil guy 🥺👉👈", none:"No problem! I'll embarrass myself either way 🗣️"},
   4: {beer:"", cider:"Is this how you got so sweet? 😜", Cock:"", shot:""},
   "4a": {IPA:"Are we talking beer or the International Phonetic Alphabet? 🔤", dark:"First round is definitely on me 🍻", cheap:"Ah, a connoisseur of the financially efficient lager 🍺"},
-  "4b": {marg:"So you like hispanic flavors 🇲🇽😏", cos:"With color’s as vibrant as your smile? 😁", mar:"Shaken or stirred? 🕵️‍♂️"},
+  "4b": {marg:"So you like hispanic flavors 🇲🇽😏", cos:"So something as vibrant as your smile? 😁", mar:"Shaken or stirred? 🕵️‍♂️"},
   "4c": {vod:"I too like to live dangerously ⚠️", teq:"Just so you know, tequila makes me want to dance 🕺", whis:"Whiskey on the rocks? I might start melting 🥃"},
-  5: {N:" ", Y:"Staaawwppp 🫣😏", K:"Fair enough 🤷‍♂️"}
+  5: {N:"Invalid selection, please try again ", Y:"Staaawwppp 🫣😏"}
 };
 
 function submitAnswer(qNum) {
@@ -188,8 +188,16 @@ function submitAnswer(qNum) {
   if (nextBtn) nextBtn.style.display = "inline-block";
 
   // Enable submit button for Q5 if eligible
+  const nextBtn = document.getElementById("next" + qNum);
   if (qNum === 5) {
-    document.getElementById("submit5").disabled = (value !== "Y");
+  if (value === "Y") {
+    nextBtn.style.display = "inline-block"; // show continue
+  } else {
+    nextBtn.style.display = "none"; // hide continue
+  }
+} else if (nextBtn) {
+  nextBtn.style.display = "inline-block"; // normal behavior for other questions
+}
   }
 
   // Send data to Google Script
