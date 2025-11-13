@@ -235,6 +235,20 @@ function calculateScores() {
   return scores;
 }
 
+// 🔹 Google Sheet Integration
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec"; // ← replace this
+
+function sendToGoogleSheet(data) {
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(() => console.log("Data sent to Google Sheet:", data))
+  .catch(err => console.error("Error sending to Google Sheet:", err));
+}
+
 function finishQuiz() {
   document.getElementById("quizForm").style.display = "none";
   document.getElementById("finalResult").style.display = "block";
@@ -247,7 +261,7 @@ function finishQuiz() {
   for (const key in finalScores) finalScores[key] === maxScore ? winners.push(key) : others.push(key);
 
   let resultText = "";
-  if (winners.length === 1) resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]}!\n\n`;
+  if (winners.length === 1) resultText += `Your top match is ${venueNames[winners[0]]} with a score of ${finalScores[winners[0]]]}!\n\n`;
   else {
     resultText += `You have a tie between: ${winners.map(w => venueNames[w]).join(", ")}\n`;
     winners.forEach(w => resultText += `${venueNames[w]}: ${finalScores[w]}\n`);
@@ -262,6 +276,9 @@ function finishQuiz() {
   document.getElementById("finalResult").innerText = resultText;
   console.log("All answers:", answers);
   console.log("Final Scores:", finalScores);
+
+  // ✅ Save responses to Google Sheet
+  sendToGoogleSheet(answers);
 }
 </script>
 
