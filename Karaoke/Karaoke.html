@@ -146,15 +146,16 @@
 </div>
 
 <script>
+let currentQuestion = 1;  // declare first
 
 function startQuiz() {
   document.getElementById("startScreen").style.display = "none";
-  currentQuestion = 1; // make sure the quiz starts at question 1
+  currentQuestion = 1;
   const firstQ = document.querySelector(`[data-question="${currentQuestion}"]`);
   if (firstQ) firstQ.classList.add("active");
 }
   
-let currentQuestion = 1;
+
 const answers = {};
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmO2ih5aR9x8W_Y3Ejfk0M44PVNoxWD29avZdZbveCTjHTjuaRkvKU8oD0FZ3lul0q/exec";
 
@@ -188,7 +189,6 @@ function submitAnswer(qNum) {
   if (nextBtn) nextBtn.style.display = "inline-block";
 
   // Enable submit button for Q5 if eligible
-  const nextBtn = document.getElementById("next" + qNum);
   if (qNum === 5) {
   if (value === "Y") {
     nextBtn.style.display = "inline-block"; // show continue
