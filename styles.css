@@ -102,6 +102,11 @@
 
 
 
+.talk-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
 .link-row-header {
   display: flex;
